@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GLTFModel.cpp" />
     <ClCompile Include="gltfViewer.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="GLTFModel.h" />
     <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="ShaderManager.h" />
