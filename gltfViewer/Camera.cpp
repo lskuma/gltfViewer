@@ -32,6 +32,8 @@ Camera::Camera(const glm::vec3& position, const glm::vec3& target, const glm::ve
 
     // 内部ベクトルを更新
     updateVectors();
+    updateViewMatrix();
+    updateProjectionMatrix();
 
     std::cout << "Camera initialized at position: (" 
         << position.x << ", " << position.y << ", " << position.z << ")" << std::endl;
@@ -64,31 +66,37 @@ void Camera::setTarget(const glm::vec3& target) {
 void Camera::moveForward(float distance) {
     m_position += m_forwardV * distance;
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 void Camera::moveBackward(float distance) {
     m_position -= m_forwardV * distance;
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 void Camera::moveLeft(float distance) {
     m_position -= m_rightV * distance;
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 void Camera::moveRight(float distance) {
     m_position += m_rightV * distance;
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 void Camera::moveUp(float distance) {
     m_position += m_upV * distance;  // カメラのローカルアップベクトルを使用
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 void Camera::moveDown(float distance) {
     m_position -= m_upV * distance;  // カメラのローカルアップベクトルを使用
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 // === 回転操作 ===
@@ -128,6 +136,8 @@ void Camera::setPerspective(float fov, float aspectRatio, float nearPlane, float
     m_nearPlane = nearPlane;
     m_farPlane = farPlane;
     m_projectionMatrixDirty = true;
+
+    updateProjectionMatrix();
 
     std::cout << "Perspective projection set - FOV: " << glm::degrees(fov) 
         << " degrees, Aspect: " << aspectRatio 
@@ -267,11 +277,11 @@ void Camera::debugPrint() const {
 // === プライベートメソッド ===
 
 void Camera::updateVectors() {
-    // オイラー角から方向ベクトルを計算
+    // オイラー角から方向ベクトルを計算（正しい数学的変換）
     glm::vec3 front;
-    front.x = std::sin(m_yaw) * std::cos(m_pitch);
-    front.y = -std::sin(m_pitch);  // OpenGLの座標系に合わせて反転
-    front.z = std::cos(m_yaw) * std::cos(m_pitch);
+    front.x = std::cos(m_yaw) * std::cos(m_pitch);
+    front.y = std::sin(m_pitch);
+    front.z = std::sin(m_yaw) * std::cos(m_pitch);
 
     m_forwardV = glm::normalize(front);
 
@@ -283,6 +293,7 @@ void Camera::updateVectors() {
 
     // ビュー行列の更新フラグを設定
     m_viewMatrixDirty = true;
+    updateViewMatrix();
 }
 
 void Camera::updateViewMatrix() const {

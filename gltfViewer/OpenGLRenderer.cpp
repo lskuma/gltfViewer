@@ -2,12 +2,22 @@
 #include <iostream>
 #include <cmath>
 #include <tiny_gltf.h>
+#include "Camera.h"
 
 OpenGLRenderer::OpenGLRenderer(HWND window) 
-    : m_hWnd(window), m_hDC(nullptr), m_hRC(nullptr), 
-    m_demoVAO(0), m_demoVBO(0), m_rotationAngle(0.0f),
-    m_windowWidth(800), m_windowHeight(600),
-    m_currentModel(nullptr), m_isDemo(true), m_isWireframeMode(true) {
+    : m_hWnd(window)
+    , m_hDC(nullptr)
+    , m_hRC(nullptr)
+    , m_demoVAO(0)
+    , m_demoVBO(0)
+    , m_rotationAngle(0.0f)
+    ,m_windowWidth(800)
+    , m_windowHeight(600)
+    ,m_currentModel(nullptr)
+    , m_isDemo(true)
+    , m_isWireframeMode(true)
+    , m_camera(nullptr)
+{
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
@@ -127,17 +137,39 @@ void OpenGLRenderer::initializeMatrices() {
     std::cout << "  視野角: 45度" << std::endl;
 }
 
-// アニメーション用の行列更新
+// 行列更新メソッドの更新版（カメラ対応）
 void OpenGLRenderer::updateMatrices() {
-    // Y軸周りの回転でアニメーション
-    m_rotationAngle += 0.01f;  // 回転速度
-    if (m_rotationAngle > 2.0f * 3.14159f) {
-        m_rotationAngle -= 2.0f * 3.14159f;
+    //// モデル行列の更新（アニメーション用回転）
+    //m_rotationAngle += 0.01f;  // 回転速度
+    //if (m_rotationAngle > 2.0f * 3.14159f) {
+    //    m_rotationAngle -= 2.0f * 3.14159f;
+    //}
+
+    //// glm::rotate()を使用してモデル行列を更新
+    //m_modelMatrix = glm::mat4(1.0f);
+    //m_modelMatrix = glm::rotate(m_modelMatrix, m_rotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    // カメラが設定されている場合、ビューと投影行列を更新
+    if (m_camera) {
+        m_viewMatrix = m_camera->getViewMatrix();
+        m_projectionMatrix = m_camera->getProjectionMatrix();
+    } else {
+        // デフォルトのカメラ設定（後方互換性のため）
+        m_viewMatrix = glm::lookAt(
+            glm::vec3(0.0f, 0.0f, 3.0f),  // カメラ位置
+            glm::vec3(0.0f, 0.0f, 0.0f),  // 注視点
+            glm::vec3(0.0f, 1.0f, 0.0f)   // アップベクトル
+        );
+        m_projectionMatrix = glm::perspective(
+            glm::radians(45.0f),
+            (float)m_windowWidth / (float)m_windowHeight,
+            0.1f,
+            100.0f
+        );
     }
 
-    // glm::rotate()を使用してモデル行列を更新
-    m_modelMatrix = glm::mat4(1.0f);
-    m_modelMatrix = glm::rotate(m_modelMatrix, m_rotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+    // シェーダーに行列を送信
+    //m_shaderManager.setMVPMatrices(m_modelMatrix, m_viewMatrix, m_projectionMatrix);
 }
 
 bool OpenGLRenderer::initialize() {
@@ -399,6 +431,13 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
         meshData.indexCount = static_cast<GLsizei>(indices.size());
     }
 
+    // マテリアルデータの取得（先ずはベースカラーのみ）
+    auto material = model.materials.at(primitive.material);
+    auto pbr = material.pbrMetallicRoughness;
+    auto color = pbr.baseColorFactor;
+    glm::vec3 materialColor(color[0], color[1], color[2]);
+    /*m_shaderManager.setUniform("u_materialColor", materialColor);*/
+
     // VAOの作成
     if (!createVAO(vertices, indices, meshData)) {
         std::cerr << "エラー: VAOの作成に失敗しました" << std::endl;
@@ -483,7 +522,11 @@ bool OpenGLRenderer::getIndexData(const tinygltf::Model& model, int accessorInde
 }
 
 // VAOの作成
-bool OpenGLRenderer::createVAO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, GLTFMeshData& meshData) {
+bool OpenGLRenderer::createVAO(
+    const std::vector<float>& vertices, 
+    const std::vector<unsigned int>& indices, 
+    GLTFMeshData& meshData) 
+{
     // VAOとVBOを生成
     glGenVertexArrays(1, &meshData.VAO);
     glGenBuffers(1, &meshData.VBO);
@@ -520,7 +563,42 @@ bool OpenGLRenderer::createVAO(const std::vector<float>& vertices, const std::ve
     return true;
 }
 
+// フェーズ5.2: カメラ更新メソッドの実装
+void OpenGLRenderer::updateCamera(const Camera* camera) {
+    if (!camera) {
+        std::cerr << "警告: カメラがnullptrです" << std::endl;
+        return;
+    }
 
+    // カメラの参照を保存
+    m_camera = camera;
+
+    // カメラからビュー行列と投影行列を取得
+    m_viewMatrix = camera->getViewMatrix();
+    m_projectionMatrix = camera->getProjectionMatrix();
+
+    // デバッグ出力（glm行列の確認）
+#ifdef _DEBUG
+    std::cout << "カメラ行列を更新しました:" << std::endl;
+    std::cout << "ビュー行列:" << std::endl;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            std::cout << m_viewMatrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "投影行列:" << std::endl;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            std::cout << m_projectionMatrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+#endif
+
+    // シェーダーに行列を送信（現在のシェーダープログラムがバインドされている前提）
+    //m_shaderManager.setMVPMatrices(m_modelMatrix, m_viewMatrix, m_projectionMatrix);
+}
 
 //// シェーダーコンパイレーションのテスト
 //void OpenGLRenderer::testShaderCompilation() {

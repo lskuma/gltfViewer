@@ -17,6 +17,8 @@ namespace tinygltf {
     struct Primitive;
 }
 
+class Camera;  // Camera クラスの前方宣言
+
 // glTFメッシュデータを保持する構造体
 struct GLTFMeshData {
     GLuint VAO;
@@ -54,6 +56,9 @@ private:
     glm::mat4 m_viewMatrix;
     glm::mat4 m_projectionMatrix;
 
+    // カメラ関連
+    const Camera* m_camera;  // カメラへの参照（所有権は外部）
+
     // レンダリングテスト用
     float m_rotationAngle;
     int m_windowWidth, m_windowHeight;
@@ -73,7 +78,9 @@ private:
     bool getIndexData(const tinygltf::Model& model, int accessorIndex, std::vector<unsigned int>& indices);
 
     // OpenGLリソースの作成
-    bool createVAO(const std::vector<float>& vertices, const std::vector<unsigned int>& indices, 
+    bool createVAO(
+        const std::vector<float>& vertices, 
+        const std::vector<unsigned int>& indices, 
         GLTFMeshData& meshData);
 
     // glm行列の初期化関数
@@ -91,6 +98,9 @@ public:
 
     // glTFモデルをロードして描画準備をする
     bool loadGLTFModel(const tinygltf::Model& model);
+
+    // カメラ更新関数（フェーズ5.2で実装）
+    void updateCamera(const Camera* camera);
 
     // レンダリングモードの設定
     void setDemoMode(bool demo) { m_isDemo = demo; }

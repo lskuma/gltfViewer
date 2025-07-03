@@ -14,109 +14,75 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
 
+#include "Camera.h"
 #include "OpenGLRenderer.h"
 #include "GLTFModel.h"
-
-// ファイルが存在するかをチェックする関数
-bool fileExists(const std::string& filename) {
-    DWORD dwAttrib = GetFileAttributesA(filename.c_str());
-    return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-}
-
-// glTFファイル拡張子を検証する関数
-bool isValidGltfFile(const std::string& filename) {
-    if (filename.length() < 5) return false;
-
-    std::string extension = filename.substr(filename.length() - 5);
-    std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-
-    return (extension == ".gltf" || filename.substr(filename.length() - 4) == ".glb");
-}
-
-// コマンドライン引数を処理する関数
-std::string processCommandLineArgs(int argc, char* argv[]) {
-    std::cout << "glTFビューアー - OpenGLレンダラー" << std::endl;
-    std::cout << "使用方法: " << argv[0] << " <gltfファイルパス>" << std::endl;
-    std::cout << "サポート形式: .gltf, .glb" << std::endl;
-    std::cout << "ESCキーで終了" << std::endl;
-    std::cout << std::endl;
-
-    // 引数の数をチェック
-    if (argc < 2) {
-        std::cout << "glTFファイルが指定されていません。三角形でデモモードを実行します。" << std::endl;
-        std::cout << "glTFファイルを読み込むには、ファイルパスを引数として指定してください。" << std::endl;
-        return ""; // 空文字列はデモモードを示す
-    }
-
-    if (argc > 2) {
-        std::cout << "警告: 複数の引数が指定されました。最初の引数をglTFファイルパスとして使用します。" << std::endl;
-    }
-
-    std::string gltfFilePath = argv[1];
-    std::cout << "glTFファイルの読み込みを試行中: " << gltfFilePath << std::endl;
-
-    // ファイル拡張子を検証
-    if (!isValidGltfFile(gltfFilePath)) {
-        std::cerr << "エラー: 無効なファイル拡張子です。.gltfまたは.glbファイルが必要です。" << std::endl;
-        std::cerr << "指定されたファイル: " << gltfFilePath << std::endl;
-        return ""; // デモモードで続行するため空文字列を返す
-    }
-
-    // ファイルが存在するかチェック
-    if (!fileExists(gltfFilePath)) {
-        std::cerr << "エラー: ファイルが存在しないか、アクセスできません。" << std::endl;
-        std::cerr << "ファイルパス: " << gltfFilePath << std::endl;
-
-        // 役立つエラー情報を提供する試み
-        size_t lastSlash = gltfFilePath.find_last_of("\\/");
-        if (lastSlash != std::string::npos) {
-            std::string directory = gltfFilePath.substr(0, lastSlash);
-            std::string filename = gltfFilePath.substr(lastSlash + 1);
-            std::cerr << "ディレクトリ: " << directory << std::endl;
-            std::cerr << "ファイル名: " << filename << std::endl;
-        }
-
-        return ""; // デモモードで続行するため空文字列を返す
-    }
-
-    // 追加検証のためファイルサイズを取得
-    HANDLE hFile = CreateFileA(gltfFilePath.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (hFile != INVALID_HANDLE_VALUE) {
-        LARGE_INTEGER fileSize;
-        if (GetFileSizeEx(hFile, &fileSize)) {
-            std::cout << "ファイルサイズ: " << fileSize.QuadPart << " バイト" << std::endl;
-
-            if (fileSize.QuadPart == 0) {
-                std::cerr << "エラー: ファイルが空です。" << std::endl;
-                CloseHandle(hFile);
-                return "";
-            }
-
-            if (fileSize.QuadPart > 100 * 1024 * 1024) { // 安全のため100MB制限
-                std::cout << "警告: 大きなファイルが検出されました（>100MB）。読み込みに時間がかかる場合があります。" << std::endl;
-            }
-        }
-        CloseHandle(hFile);
-    }
-
-    std::cout << "ファイル検証が成功しました。glTFファイルの読み込み準備完了。" << std::endl;
-    return gltfFilePath;
-}
+#include "UtilFunc.h"
 
 // グローバル変数
 OpenGLRenderer* g_renderer = nullptr;
 GLTFModel* g_gltfModel = nullptr;
+Camera* g_camera = nullptr;
 bool g_running = true;
+
+// マウス入力制御用グローバル変数
+bool g_mousePressed = false;
+int g_lastMouseX = 0;
+int g_lastMouseY = 0;
+const float g_mouseSensitivity = 0.005f;  // マウス感度
+const float g_movementSpeed = 0.1f;        // カメラ移動速度
+
+// キーボード入力状態
+bool g_keyStates[256] = { false };
+
+// キーボード入力処理関数
+void processKeyboardInput() {
+    if (!g_camera) return;
+
+    // WASD移動
+    if (g_keyStates['W'] || g_keyStates['w']) {
+        g_camera->moveForward(g_movementSpeed);
+    }
+    if (g_keyStates['S'] || g_keyStates['s']) {
+        g_camera->moveBackward(g_movementSpeed);
+    }
+    if (g_keyStates['A'] || g_keyStates['a']) {
+        g_camera->moveLeft(g_movementSpeed);
+    }
+    if (g_keyStates['D'] || g_keyStates['d']) {
+        g_camera->moveRight(g_movementSpeed);
+    }
+
+    // QE上下移動
+    if (g_keyStates['Q'] || g_keyStates['q']) {
+        g_camera->moveUp(g_movementSpeed);
+    }
+    if (g_keyStates['E'] || g_keyStates['e']) {
+        g_camera->moveDown(g_movementSpeed);
+    }
+
+    // カメラ更新をレンダラーに反映
+    if (g_renderer) {
+        g_renderer->updateCamera(g_camera);
+    }
+}
 
 // ウィンドウプロシージャ
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
     case WM_CREATE:
+        // カメラを初期化
+        g_camera = new Camera();
+        g_camera->setPerspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
         g_renderer = new OpenGLRenderer(hWnd);
         if (!g_renderer->initialize()) {
             std::cerr << "OpenGLレンダラーの初期化に失敗しました" << std::endl;
             return -1;
         } else {
+            // カメラをレンダラーに設定
+            g_renderer->updateCamera(g_camera);
+
             if(g_gltfModel != nullptr && g_gltfModel->validateModel())
             {
                 g_renderer->loadGLTFModel(g_gltfModel->getModel());
@@ -139,16 +105,74 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         int height = HIWORD(lParam);
         if (g_renderer && width > 0 && height > 0) {
             g_renderer->onResize(width, height);
+
+            // カメラのアスペクト比も更新
+            if (g_camera) {
+                g_camera->setAspectRatio((float)width / (float)height);
+                g_renderer->updateCamera(g_camera);
+            }
+
             InvalidateRect(hWnd, nullptr, FALSE);
         }
         break;
     }
 
+                // キーボード入力処理
     case WM_KEYDOWN:
         if (wParam == VK_ESCAPE) {
             PostMessage(hWnd, WM_CLOSE, 0, 0);
+        } else if (wParam < 256) {
+            g_keyStates[wParam] = true;
         }
         break;
+
+    case WM_KEYUP:
+        if (wParam < 256) {
+            g_keyStates[wParam] = false;
+        }
+        break;
+
+        // マウス入力処理
+    case WM_LBUTTONDOWN: {
+            g_mousePressed = true;
+            g_lastMouseX = LOWORD(lParam);
+            g_lastMouseY = HIWORD(lParam);
+            SetCapture(hWnd);  // マウスキャプチャを開始
+            break;
+    }
+
+    case WM_LBUTTONUP: {
+        g_mousePressed = false;
+        ReleaseCapture();  // マウスキャプチャを終了
+        break;
+    }
+
+    case WM_MOUSEMOVE: {
+        int mouseX = LOWORD(lParam);
+        int mouseY = HIWORD(lParam);
+
+        if (g_mousePressed && g_camera) {
+            // マウスの移動量を計算
+            int deltaX = mouseX - g_lastMouseX;
+            int deltaY = mouseY - g_lastMouseY;
+
+            // カメラの回転に反映（glm::rotate()を使用した回転制御）
+            g_camera->addYaw(-deltaX * g_mouseSensitivity);   // 水平回転（ヨー）
+            g_camera->addPitch(-deltaY * g_mouseSensitivity); // 垂直回転（ピッチ）
+
+            // カメラ更新をレンダラーに反映
+            if (g_renderer) {
+                g_renderer->updateCamera(g_camera);
+            }
+
+            // 再描画をトリガー
+            InvalidateRect(hWnd, nullptr, FALSE);
+        }
+
+        g_lastMouseX = mouseX;
+        g_lastMouseY = mouseY;
+        break;
+    }
 
     case WM_CLOSE:
         g_running = false;
@@ -163,6 +187,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         if(g_gltfModel) {
             delete g_gltfModel;
             g_gltfModel = nullptr;
+        }
+        if(g_camera) {
+            delete g_camera;
+            g_camera = nullptr;
         }
         g_running = false;
         PostQuitMessage(0);
@@ -210,7 +238,7 @@ int main(int argc, char* argv[]) {
     HWND hWnd = CreateWindowEx(
         0,
         className,
-        _T("gltfViewer"),
+        _T("gltfViewer - WASD移動, マウスドラッグ回転, ESC終了"),
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
         800, 600,
@@ -236,6 +264,9 @@ int main(int argc, char* argv[]) {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        // キーボード入力処理（連続入力対応）
+        processKeyboardInput();
 
         // 連続レンダリング
         if (g_renderer && g_running) {
