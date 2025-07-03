@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -12,28 +12,28 @@ private:
     std::unordered_map<std::string, GLint> m_uniformLocations;
     bool m_isCompiled;
 
-    // ƒVƒF[ƒ_[ƒRƒ“ƒpƒCƒ‹—p‚Ì“à•”ŠÖ”
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ç”¨ã®å†…éƒ¨é–¢æ•°
     GLuint compileShader(const std::string& source, GLenum shaderType);
     bool linkProgram(GLuint vertexShader, GLuint fragmentShader);
     void checkCompileErrors(GLuint shader, const std::string& type);
     void checkLinkErrors(GLuint program);
 
-    // UniformˆÊ’u‚ÌƒLƒƒƒbƒVƒ…‹@”\
+    // Uniformä½ç½®ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥æ©Ÿèƒ½
     GLint getUniformLocation(const std::string& name);
 
 public:
     ShaderManager();
     ~ShaderManager();
 
-    // ƒVƒF[ƒ_[‚Ìì¬EƒRƒ“ƒpƒCƒ‹
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ä½œæˆãƒ»ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
     bool createShader(const std::string& vertexSource, const std::string& fragmentSource);
     bool createShaderFromFiles(const std::string& vertexPath, const std::string& fragmentPath);
 
-    // ƒVƒF[ƒ_[‚Ìg—pŠJnEI—¹
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ä½¿ç”¨é–‹å§‹ãƒ»çµ‚äº†
     void use();
     void unuse();
 
-    // glmŒ^‚ÌUniform•Ï”İ’è (glm“‡‚Ìd—v‹@”\)
+    // glmå‹ã®Uniformå¤‰æ•°è¨­å®š (glmçµ±åˆã®é‡è¦æ©Ÿèƒ½)
     void setUniform(const std::string& name, const glm::mat4& matrix);
     void setUniform(const std::string& name, const glm::mat3& matrix);
     void setUniform(const std::string& name, const glm::vec4& vector);
@@ -43,24 +43,24 @@ public:
     void setUniform(const std::string& name, int value);
     void setUniform(const std::string& name, bool value);
 
-    // MVPs—ñİ’è—p‚Ì•Ö—˜ŠÖ” (Phase 4.3‚Åd—v)
+    // MVPè¡Œåˆ—è¨­å®šç”¨ã®ä¾¿åˆ©é–¢æ•° (Phase 4.3ã§é‡è¦)
     void setMVPMatrices(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void setModelMatrix(const glm::mat4& model);
     void setViewMatrix(const glm::mat4& view);
     void setProjectionMatrix(const glm::mat4& projection);
 
-    // ó‘Ôæ“¾
+    // çŠ¶æ…‹å–å¾—
     bool isValid() const { return m_isCompiled && m_programID != 0; }
     GLuint getProgramID() const { return m_programID; }
 
-    // ƒŠƒ\[ƒXŠÇ—
+    // ãƒªã‚½ãƒ¼ã‚¹ç®¡ç†
     void cleanup();
 
-    // ƒfƒoƒbƒO—pƒ†[ƒeƒBƒŠƒeƒB
+    // ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
     void printActiveUniforms();
     void printActiveAttributes();
 
-    // Šî–{“I‚ÈƒVƒF[ƒ_[ƒ\[ƒX‚Ì’ñ‹Ÿ
+    // åŸºæœ¬çš„ãªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚½ãƒ¼ã‚¹ã®æä¾›
     static std::string getBasicVertexShader();
     static std::string getBasicFragmentShader();
     static std::string getColoredVertexShader();

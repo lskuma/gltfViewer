@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-// glTFƒ‚ƒfƒ‹ƒf[ƒ^‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+// glTFãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 class GLTFModel {
 private:
     tinygltf::Model m_model;
@@ -13,7 +13,7 @@ public:
 
     void printModelInfo();
 
-    // Ú×‚È\‘¢‰ğÍ
+    // è©³ç´°ãªæ§‹é€ è§£æ
     void analyzeStructure();
 
 private:
@@ -30,7 +30,7 @@ private:
     void analyzeBuffers();
 
 public:
-    // ŒŸØ‹@”\
+    // æ¤œè¨¼æ©Ÿèƒ½
     bool validateModel();
 
     bool isLoaded() const { return m_loaded; }

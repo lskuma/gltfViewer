@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
@@ -6,274 +6,274 @@
 #include <glm/gtc/type_ptr.hpp>
 
 /**
-* @brief OpenGL—pƒJƒƒ‰ƒNƒ‰ƒX
+* @brief OpenGLç”¨ã‚«ãƒ¡ãƒ©ã‚¯ãƒ©ã‚¹
 * 
-* glmƒ‰ƒCƒuƒ‰ƒŠ‚ðŽg—p‚µ‚Ä3DƒJƒƒ‰ƒVƒXƒeƒ€‚ðŽÀ‘•‚µ‚Ü‚·B
-* ˆÊ’uAŒü‚«AƒAƒbƒvƒxƒNƒgƒ‹‚ðglm::vec3‚ÅŠÇ—‚µA
-* ƒrƒ…[s—ñ‚Æ“Š‰es—ñ‚ð’ñ‹Ÿ‚µ‚Ü‚·B
+* glmãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ä½¿ç”¨ã—ã¦3Dã‚«ãƒ¡ãƒ©ã‚·ã‚¹ãƒ†ãƒ ã‚’å®Ÿè£…ã—ã¾ã™ã€‚
+* ä½ç½®ã€å‘ãã€ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’glm::vec3ã§ç®¡ç†ã—ã€
+* ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã¨æŠ•å½±è¡Œåˆ—ã‚’æä¾›ã—ã¾ã™ã€‚
 */
 class Camera {
 public:
     /**
-    * @brief ƒJƒƒ‰‚Ì“Š‰eƒ^ƒCƒv
+    * @brief ã‚«ãƒ¡ãƒ©ã®æŠ•å½±ã‚¿ã‚¤ãƒ—
     */
     enum class ProjectionType {
-        PERSPECTIVE,    ///< “§Ž‹“Š‰e
-        ORTHOGRAPHIC    ///< ³ŽË‰e
+        PERSPECTIVE,    ///< é€è¦–æŠ•å½±
+        ORTHOGRAPHIC    ///< æ­£å°„å½±
     };
 
     /**
-    * @brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-    * @param position ƒJƒƒ‰‚Ì‰ŠúˆÊ’u
-    * @param target ƒJƒƒ‰‚ªŒü‚­–Ú•W“_
-    * @param up ƒAƒbƒvƒxƒNƒgƒ‹i’Êí‚Í(0,1,0)j
+    * @brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    * @param position ã‚«ãƒ¡ãƒ©ã®åˆæœŸä½ç½®
+    * @param target ã‚«ãƒ¡ãƒ©ãŒå‘ãç›®æ¨™ç‚¹
+    * @param up ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆé€šå¸¸ã¯(0,1,0)ï¼‰
     */
     Camera(const glm::vec3& position = glm::vec3(0.0f, 0.0f, 3.0f),
         const glm::vec3& target = glm::vec3(0.0f, 0.0f, 0.0f),
         const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f));
 
     /**
-    * @brief ƒfƒXƒgƒ‰ƒNƒ^
+    * @brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     */
     ~Camera() = default;
 
-    // === ˆÊ’uEŒü‚«‘€ì ===
+    // === ä½ç½®ãƒ»å‘ãæ“ä½œ ===
 
     /**
-    * @brief ƒJƒƒ‰‚ÌˆÊ’u‚ðÝ’è
-    * @param position V‚µ‚¢ˆÊ’uƒxƒNƒgƒ‹
+    * @brief ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’è¨­å®š
+    * @param position æ–°ã—ã„ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
     */
     void setPosition(const glm::vec3& position);
 
     /**
-    * @brief ƒJƒƒ‰‚ÌˆÊ’u‚ðŽæ“¾
-    * @return Œ»Ý‚ÌˆÊ’uƒxƒNƒgƒ‹
+    * @brief ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å–å¾—
+    * @return ç¾åœ¨ã®ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«
     */
     const glm::vec3& getPosition() const { return m_position; }
 
     /**
-    * @brief ƒJƒƒ‰‚ÌŒü‚«‚ðÝ’èi–Ú•W“_Žw’èj
-    * @param target ƒJƒƒ‰‚ªŒü‚­–Ú•W“_
+    * @brief ã‚«ãƒ¡ãƒ©ã®å‘ãã‚’è¨­å®šï¼ˆç›®æ¨™ç‚¹æŒ‡å®šï¼‰
+    * @param target ã‚«ãƒ¡ãƒ©ãŒå‘ãç›®æ¨™ç‚¹
     */
     void setTarget(const glm::vec3& target);
 
     /**
-    * @brief ƒJƒƒ‰‚ÌŒü‚«‚ðŽæ“¾
-    * @return Œ»Ý‚ÌŒü‚«ƒxƒNƒgƒ‹i³‹K‰»Ï‚Ýj
+    * @brief ã‚«ãƒ¡ãƒ©ã®å‘ãã‚’å–å¾—
+    * @return ç¾åœ¨ã®å‘ããƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
     */
     const glm::vec3& getForward() const { return m_forwardV; }
 
     /**
-    * @brief ƒJƒƒ‰‚Ì‰E•ûŒüƒxƒNƒgƒ‹‚ðŽæ“¾
-    * @return ‰E•ûŒüƒxƒNƒgƒ‹i³‹K‰»Ï‚Ýj
+    * @brief ã‚«ãƒ¡ãƒ©ã®å³æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
+    * @return å³æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
     */
     const glm::vec3& getRight() const { return m_rightV; }
 
     /**
-    * @brief ƒJƒƒ‰‚ÌƒAƒbƒvƒxƒNƒgƒ‹‚ðŽæ“¾
-    * @return ƒAƒbƒvƒxƒNƒgƒ‹i³‹K‰»Ï‚Ýj
+    * @brief ã‚«ãƒ¡ãƒ©ã®ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
+    * @return ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
     */
     const glm::vec3& getUp() const { return m_upV; }
 
-    // === ˆÚ“®‘€ì ===
+    // === ç§»å‹•æ“ä½œ ===
 
     /**
-    * @brief ‘O•ûŒü‚ÉˆÚ“®
-    * @param distance ˆÚ“®‹——£
+    * @brief å‰æ–¹å‘ã«ç§»å‹•
+    * @param distance ç§»å‹•è·é›¢
     */
     void moveForward(float distance);
 
     /**
-    * @brief Œã•ûŒü‚ÉˆÚ“®
-    * @param distance ˆÚ“®‹——£
+    * @brief å¾Œæ–¹å‘ã«ç§»å‹•
+    * @param distance ç§»å‹•è·é›¢
     */
     void moveBackward(float distance);
 
     /**
-    * @brief ¶•ûŒü‚ÉˆÚ“®
-    * @param distance ˆÚ“®‹——£
+    * @brief å·¦æ–¹å‘ã«ç§»å‹•
+    * @param distance ç§»å‹•è·é›¢
     */
     void moveLeft(float distance);
 
     /**
-    * @brief ‰E•ûŒü‚ÉˆÚ“®
-    * @param distance ˆÚ“®‹——£
+    * @brief å³æ–¹å‘ã«ç§»å‹•
+    * @param distance ç§»å‹•è·é›¢
     */
     void moveRight(float distance);
 
     /**
-    * @brief ã•ûŒü‚ÉˆÚ“®
-    * @param distance ˆÚ“®‹——£
+    * @brief ä¸Šæ–¹å‘ã«ç§»å‹•
+    * @param distance ç§»å‹•è·é›¢
     */
     void moveUp(float distance);
 
     /**
-    * @brief ‰º•ûŒü‚ÉˆÚ“®
-    * @param distance ˆÚ“®‹——£
+    * @brief ä¸‹æ–¹å‘ã«ç§»å‹•
+    * @param distance ç§»å‹•è·é›¢
     */
     void moveDown(float distance);
 
-    // === ‰ñ“]‘€ì ===
+    // === å›žè»¢æ“ä½œ ===
 
     /**
-    * @brief ƒˆ[iYŽ²‰ñ“]j‚ðÝ’è
-    * @param yaw ƒˆ[Šp“xiƒ‰ƒWƒAƒ“j
+    * @brief ãƒ¨ãƒ¼ï¼ˆYè»¸å›žè»¢ï¼‰ã‚’è¨­å®š
+    * @param yaw ãƒ¨ãƒ¼è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     void setYaw(float yaw);
 
     /**
-    * @brief ƒsƒbƒ`iXŽ²‰ñ“]j‚ðÝ’è
-    * @param pitch ƒsƒbƒ`Šp“xiƒ‰ƒWƒAƒ“j
+    * @brief ãƒ”ãƒƒãƒï¼ˆXè»¸å›žè»¢ï¼‰ã‚’è¨­å®š
+    * @param pitch ãƒ”ãƒƒãƒè§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     void setPitch(float pitch);
 
     /**
-    * @brief ƒˆ[‚Æƒsƒbƒ`‚ð“¯Žž‚ÉÝ’è
-    * @param yaw ƒˆ[Šp“xiƒ‰ƒWƒAƒ“j
-    * @param pitch ƒsƒbƒ`Šp“xiƒ‰ƒWƒAƒ“j
+    * @brief ãƒ¨ãƒ¼ã¨ãƒ”ãƒƒãƒã‚’åŒæ™‚ã«è¨­å®š
+    * @param yaw ãƒ¨ãƒ¼è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
+    * @param pitch ãƒ”ãƒƒãƒè§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     void setYawPitch(float yaw, float pitch);
 
     /**
-    * @brief Œ»Ý‚Ìƒˆ[Šp“x‚ðŽæ“¾
-    * @return ƒˆ[Šp“xiƒ‰ƒWƒAƒ“j
+    * @brief ç¾åœ¨ã®ãƒ¨ãƒ¼è§’åº¦ã‚’å–å¾—
+    * @return ãƒ¨ãƒ¼è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     float getYaw() const { return m_yaw; }
 
     /**
-    * @brief Œ»Ý‚Ìƒsƒbƒ`Šp“x‚ðŽæ“¾
-    * @return ƒsƒbƒ`Šp“xiƒ‰ƒWƒAƒ“j
+    * @brief ç¾åœ¨ã®ãƒ”ãƒƒãƒè§’åº¦ã‚’å–å¾—
+    * @return ãƒ”ãƒƒãƒè§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     float getPitch() const { return m_pitch; }
 
     /**
-    * @brief ƒˆ[Šp“x‚ð‘Š‘Î“I‚É•ÏX
-    * @param deltaYaw •ÏX—Êiƒ‰ƒWƒAƒ“j
+    * @brief ãƒ¨ãƒ¼è§’åº¦ã‚’ç›¸å¯¾çš„ã«å¤‰æ›´
+    * @param deltaYaw å¤‰æ›´é‡ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     void addYaw(float deltaYaw);
 
     /**
-    * @brief ƒsƒbƒ`Šp“x‚ð‘Š‘Î“I‚É•ÏX
-    * @param deltaPitch •ÏX—Êiƒ‰ƒWƒAƒ“j
+    * @brief ãƒ”ãƒƒãƒè§’åº¦ã‚’ç›¸å¯¾çš„ã«å¤‰æ›´
+    * @param deltaPitch å¤‰æ›´é‡ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
     */
     void addPitch(float deltaPitch);
 
-    // === “Š‰eÝ’è ===
+    // === æŠ•å½±è¨­å®š ===
 
     /**
-    * @brief “§Ž‹“Š‰e‚ðÝ’è
-    * @param fov Ž‹–ìŠpiƒ‰ƒWƒAƒ“j
-    * @param aspectRatio ƒAƒXƒyƒNƒg”äi•/‚‚³j
-    * @param nearPlane ‹ßƒNƒŠƒbƒv–Ê‹——£
-    * @param farPlane ‰“ƒNƒŠƒbƒv–Ê‹——£
+    * @brief é€è¦–æŠ•å½±ã‚’è¨­å®š
+    * @param fov è¦–é‡Žè§’ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
+    * @param aspectRatio ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ï¼ˆå¹…/é«˜ã•ï¼‰
+    * @param nearPlane è¿‘ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢
+    * @param farPlane é ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢
     */
     void setPerspective(float fov, float aspectRatio, float nearPlane, float farPlane);
 
     /**
-    * @brief ³ŽË‰e‚ðÝ’è
-    * @param left ¶’[
-    * @param right ‰E’[
-    * @param bottom ‰º’[
-    * @param top ã’[
-    * @param nearPlane ‹ßƒNƒŠƒbƒv–Ê‹——£
-    * @param farPlane ‰“ƒNƒŠƒbƒv–Ê‹——£
+    * @brief æ­£å°„å½±ã‚’è¨­å®š
+    * @param left å·¦ç«¯
+    * @param right å³ç«¯
+    * @param bottom ä¸‹ç«¯
+    * @param top ä¸Šç«¯
+    * @param nearPlane è¿‘ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢
+    * @param farPlane é ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢
     */
     void setOrthographic(float left, float right, float bottom, float top, float nearPlane, float farPlane);
 
     /**
-    * @brief ƒAƒXƒyƒNƒg”ä‚ðÝ’èi“§Ž‹“Š‰e‚Ìê‡‚Ì‚Ýj
-    * @param aspectRatio V‚µ‚¢ƒAƒXƒyƒNƒg”ä
+    * @brief ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã‚’è¨­å®šï¼ˆé€è¦–æŠ•å½±ã®å ´åˆã®ã¿ï¼‰
+    * @param aspectRatio æ–°ã—ã„ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
     */
     void setAspectRatio(float aspectRatio);
 
-    // === s—ñŽæ“¾ ===
+    // === è¡Œåˆ—å–å¾— ===
 
     /**
-    * @brief ƒrƒ…[s—ñ‚ðŽæ“¾
-    * @return ƒrƒ…[s—ñiglm::mat4j
+    * @brief ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’å–å¾—
+    * @return ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ï¼ˆglm::mat4ï¼‰
     */
     const glm::mat4& getViewMatrix() const { return m_viewMatrix; }
 
     /**
-    * @brief “Š‰es—ñ‚ðŽæ“¾
-    * @return “Š‰es—ñiglm::mat4j
+    * @brief æŠ•å½±è¡Œåˆ—ã‚’å–å¾—
+    * @return æŠ•å½±è¡Œåˆ—ï¼ˆglm::mat4ï¼‰
     */
     const glm::mat4& getProjectionMatrix() const { return m_projectionMatrix; }
 
     /**
-    * @brief ƒrƒ…[E“Š‰es—ñ‚ðŽæ“¾
-    * @return ƒrƒ…[E“Š‰es—ñiglm::mat4j
+    * @brief ãƒ“ãƒ¥ãƒ¼ãƒ»æŠ•å½±è¡Œåˆ—ã‚’å–å¾—
+    * @return ãƒ“ãƒ¥ãƒ¼ãƒ»æŠ•å½±è¡Œåˆ—ï¼ˆglm::mat4ï¼‰
     */
     glm::mat4 getViewProjectionMatrix() const;
 
-    // === Ž©“®ƒtƒBƒbƒeƒBƒ“ƒO ===
+    // === è‡ªå‹•ãƒ•ã‚£ãƒƒãƒ†ã‚£ãƒ³ã‚° ===
 
     /**
-    * @brief ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÉŠî‚Ã‚¢‚ÄƒJƒƒ‰‚ðŽ©“®ƒtƒBƒbƒg
-    * @param boundingBoxMin ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌÅ¬À•W
-    * @param boundingBoxMax ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌÅ‘åÀ•W
-    * @param padding ƒpƒfƒBƒ“ƒOŒW”i1.0‚ÅÅ“KƒtƒBƒbƒgA‘å‚«‚¢‚Ù‚Ç—]—T‚ðŽ‚Âj
+    * @brief ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã«åŸºã¥ã„ã¦ã‚«ãƒ¡ãƒ©ã‚’è‡ªå‹•ãƒ•ã‚£ãƒƒãƒˆ
+    * @param boundingBoxMin ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®æœ€å°åº§æ¨™
+    * @param boundingBoxMax ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®æœ€å¤§åº§æ¨™
+    * @param padding ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ä¿‚æ•°ï¼ˆ1.0ã§æœ€é©ãƒ•ã‚£ãƒƒãƒˆã€å¤§ãã„ã»ã©ä½™è£•ã‚’æŒã¤ï¼‰
     */
     void fitToBoundingBox(const glm::vec3& boundingBoxMin, const glm::vec3& boundingBoxMax, float padding = 1.2f);
 
-    // === ƒfƒoƒbƒO ===
+    // === ãƒ‡ãƒãƒƒã‚° ===
 
     /**
-    * @brief ƒJƒƒ‰‚Ìó‘Ô‚ðƒfƒoƒbƒOo—Í
+    * @brief ã‚«ãƒ¡ãƒ©ã®çŠ¶æ…‹ã‚’ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›
     */
     void debugPrint() const;
 
 private:
-    // === ƒvƒ‰ƒCƒx[ƒgƒƒ“ƒo•Ï” ===
+    // === ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ¡ãƒ³ãƒå¤‰æ•° ===
 
-    // ˆÊ’uEŒü‚«
-    glm::vec3 m_position;       ///< ƒJƒƒ‰‚ÌˆÊ’u
-    glm::vec3 m_forwardV;       ///< ‘O•ûŒüƒxƒNƒgƒ‹i³‹K‰»Ï‚Ýj
-    glm::vec3 m_rightV;         ///< ‰E•ûŒüƒxƒNƒgƒ‹i³‹K‰»Ï‚Ýj
-    glm::vec3 m_upV;            ///< ƒAƒbƒvƒxƒNƒgƒ‹i³‹K‰»Ï‚Ýj
-    glm::vec3 m_worldUp;        ///< ƒ[ƒ‹ƒhƒAƒbƒvƒxƒNƒgƒ‹i’Êí‚Í(0,1,0)j
+    // ä½ç½®ãƒ»å‘ã
+    glm::vec3 m_position;       ///< ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+    glm::vec3 m_forwardV;       ///< å‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
+    glm::vec3 m_rightV;         ///< å³æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
+    glm::vec3 m_upV;            ///< ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆæ­£è¦åŒ–æ¸ˆã¿ï¼‰
+    glm::vec3 m_worldUp;        ///< ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆé€šå¸¸ã¯(0,1,0)ï¼‰
 
-    // ‰ñ“]Šp“x
-    float m_yaw;                ///< ƒˆ[Šp“xiƒ‰ƒWƒAƒ“j
-    float m_pitch;              ///< ƒsƒbƒ`Šp“xiƒ‰ƒWƒAƒ“j
+    // å›žè»¢è§’åº¦
+    float m_yaw;                ///< ãƒ¨ãƒ¼è§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
+    float m_pitch;              ///< ãƒ”ãƒƒãƒè§’åº¦ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ï¼‰
 
-    // “Š‰eÝ’è
-    ProjectionType m_projectionType;  ///< “Š‰eƒ^ƒCƒv
-    float m_fov;                      ///< Ž‹–ìŠpiƒ‰ƒWƒAƒ“A“§Ž‹“Š‰e—pj
-    float m_aspectRatio;              ///< ƒAƒXƒyƒNƒg”ä
-    float m_nearPlane;                ///< ‹ßƒNƒŠƒbƒv–Ê‹——£
-    float m_farPlane;                 ///< ‰“ƒNƒŠƒbƒv–Ê‹——£
+    // æŠ•å½±è¨­å®š
+    ProjectionType m_projectionType;  ///< æŠ•å½±ã‚¿ã‚¤ãƒ—
+    float m_fov;                      ///< è¦–é‡Žè§’ï¼ˆãƒ©ã‚¸ã‚¢ãƒ³ã€é€è¦–æŠ•å½±ç”¨ï¼‰
+    float m_aspectRatio;              ///< ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
+    float m_nearPlane;                ///< è¿‘ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢
+    float m_farPlane;                 ///< é ã‚¯ãƒªãƒƒãƒ—é¢è·é›¢
 
-    // ³ŽË‰e—pƒpƒ‰ƒ[ƒ^
+    // æ­£å°„å½±ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
     float m_left, m_right, m_bottom, m_top;
 
-    // s—ñ
-    mutable glm::mat4 m_viewMatrix;        ///< ƒrƒ…[s—ñ
-    mutable glm::mat4 m_projectionMatrix;  ///< “Š‰es—ñ
-    mutable bool m_viewMatrixDirty;        ///< ƒrƒ…[s—ñ‚ÌXVƒtƒ‰ƒO
-    mutable bool m_projectionMatrixDirty;  ///< “Š‰es—ñ‚ÌXVƒtƒ‰ƒO
+    // è¡Œåˆ—
+    mutable glm::mat4 m_viewMatrix;        ///< ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
+    mutable glm::mat4 m_projectionMatrix;  ///< æŠ•å½±è¡Œåˆ—
+    mutable bool m_viewMatrixDirty;        ///< ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®æ›´æ–°ãƒ•ãƒ©ã‚°
+    mutable bool m_projectionMatrixDirty;  ///< æŠ•å½±è¡Œåˆ—ã®æ›´æ–°ãƒ•ãƒ©ã‚°
 
-    // === ƒvƒ‰ƒCƒx[ƒgƒƒ\ƒbƒh ===
+    // === ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ¡ã‚½ãƒƒãƒ‰ ===
 
     /**
-    * @brief “à•”ƒxƒNƒgƒ‹‚ðXV
+    * @brief å†…éƒ¨ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ›´æ–°
     */
     void updateVectors();
 
     /**
-    * @brief ƒrƒ…[s—ñ‚ðXV
+    * @brief ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
     */
     void updateViewMatrix() const;
 
     /**
-    * @brief “Š‰es—ñ‚ðXV
+    * @brief æŠ•å½±è¡Œåˆ—ã‚’æ›´æ–°
     */
     void updateProjectionMatrix() const;
 
     /**
-    * @brief ƒsƒbƒ`Šp“x‚ð§ŒÀ
-    * @param pitch §ŒÀ‘O‚Ìƒsƒbƒ`Šp“x
-    * @return §ŒÀŒã‚Ìƒsƒbƒ`Šp“x
+    * @brief ãƒ”ãƒƒãƒè§’åº¦ã‚’åˆ¶é™
+    * @param pitch åˆ¶é™å‰ã®ãƒ”ãƒƒãƒè§’åº¦
+    * @return åˆ¶é™å¾Œã®ãƒ”ãƒƒãƒè§’åº¦
     */
     float constrainPitch(float pitch) const;
 };

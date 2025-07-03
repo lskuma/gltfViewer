@@ -1,4 +1,4 @@
-#include <Windows.h>
+ï»¿#include <Windows.h>
 #include <iostream>
 
 #include <tiny_gltf.h>
@@ -11,7 +11,7 @@ bool GLTFModel::loadFromFile(const std::string& filepath)
     std::string err;
     std::string warn;
 
-    // ƒtƒ@ƒCƒ‹Šg’£q‚É‚æ‚Á‚Ä“Ç‚İ‚İ•û–@‚ğŒˆ’è
+    // ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã«ã‚ˆã£ã¦èª­ã¿è¾¼ã¿æ–¹æ³•ã‚’æ±ºå®š
     bool ret = false;
     if (filepath.substr(filepath.length() - 4) == ".glb") {
         ret = loader.LoadBinaryFromFile(&m_model, &err, &warn, filepath);
@@ -19,24 +19,24 @@ bool GLTFModel::loadFromFile(const std::string& filepath)
         ret = loader.LoadASCIIFromFile(&m_model, &err, &warn, filepath);
     }
 
-    // Œx‚ÆƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
+    // è­¦å‘Šã¨ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
     if (!warn.empty()) {
-        std::cout << "Œx: " << warn << std::endl;
+        std::cout << "è­¦å‘Š: " << warn << std::endl;
     }
 
     if (!err.empty()) {
-        std::cerr << "ƒGƒ‰[: " << err << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: " << err << std::endl;
     }
 
     if (!ret) {
-        std::cerr << "glTFƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½: " << filepath << std::endl;
+        std::cerr << "glTFãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ: " << filepath << std::endl;
         return false;
     }
 
     m_loaded = true;
-    std::cout << "glTFƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚ª¬Œ÷‚µ‚Ü‚µ‚½: " << filepath << std::endl;
+    std::cout << "glTFãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ãŒæˆåŠŸã—ã¾ã—ãŸ: " << filepath << std::endl;
 
-    // Šî–{î•ñ‚ğ•\¦
+    // åŸºæœ¬æƒ…å ±ã‚’è¡¨ç¤º
     printModelInfo();
 
     return true;
@@ -46,92 +46,92 @@ bool GLTFModel::loadFromFile(const std::string& filepath)
 void GLTFModel::printModelInfo()
 {
     if (!m_loaded) {
-        std::cout << "ƒ‚ƒfƒ‹‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ" << std::endl;
+        std::cout << "ãƒ¢ãƒ‡ãƒ«ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“" << std::endl;
         return;
     }
 
-    std::cout << "\n=== glTFƒ‚ƒfƒ‹î•ñ ===" << std::endl;
+    std::cout << "\n=== glTFãƒ¢ãƒ‡ãƒ«æƒ…å ± ===" << std::endl;
 
-    // ƒAƒZƒbƒgî•ñ
+    // ã‚¢ã‚»ãƒƒãƒˆæƒ…å ±
     if (!m_model.asset.version.empty()) {
-        std::cout << "glTFƒo[ƒWƒ‡ƒ“: " << m_model.asset.version << std::endl;
+        std::cout << "glTFãƒãƒ¼ã‚¸ãƒ§ãƒ³: " << m_model.asset.version << std::endl;
     }
     if (!m_model.asset.generator.empty()) {
-        std::cout << "¶¬ƒc[ƒ‹: " << m_model.asset.generator << std::endl;
+        std::cout << "ç”Ÿæˆãƒ„ãƒ¼ãƒ«: " << m_model.asset.generator << std::endl;
     }
 
-    // ƒV[ƒ“î•ñ
-    std::cout << "ƒV[ƒ“”: " << m_model.scenes.size() << std::endl;
+    // ã‚·ãƒ¼ãƒ³æƒ…å ±
+    std::cout << "ã‚·ãƒ¼ãƒ³æ•°: " << m_model.scenes.size() << std::endl;
     if (m_model.defaultScene >= 0) {
-        std::cout << "ƒfƒtƒHƒ‹ƒgƒV[ƒ“: " << m_model.defaultScene << std::endl;
+        std::cout << "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚·ãƒ¼ãƒ³: " << m_model.defaultScene << std::endl;
     }
 
-    // ƒm[ƒhî•ñ
-    std::cout << "ƒm[ƒh”: " << m_model.nodes.size() << std::endl;
+    // ãƒãƒ¼ãƒ‰æƒ…å ±
+    std::cout << "ãƒãƒ¼ãƒ‰æ•°: " << m_model.nodes.size() << std::endl;
 
-    // ƒƒbƒVƒ…î•ñ
-    std::cout << "ƒƒbƒVƒ…”: " << m_model.meshes.size() << std::endl;
+    // ãƒ¡ãƒƒã‚·ãƒ¥æƒ…å ±
+    std::cout << "ãƒ¡ãƒƒã‚·ãƒ¥æ•°: " << m_model.meshes.size() << std::endl;
     for (size_t i = 0; i < m_model.meshes.size(); ++i) {
         const auto& mesh = m_model.meshes[i];
-        std::cout << "  ƒƒbƒVƒ… " << i << ": ";
+        std::cout << "  ãƒ¡ãƒƒã‚·ãƒ¥ " << i << ": ";
         if (!mesh.name.empty()) {
             std::cout << "\"" << mesh.name << "\" ";
         }
-        std::cout << "ƒvƒŠƒ~ƒeƒBƒu”: " << mesh.primitives.size() << std::endl;
+        std::cout << "ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æ•°: " << mesh.primitives.size() << std::endl;
     }
 
-    // ƒ}ƒeƒŠƒAƒ‹î•ñ
-    std::cout << "ƒ}ƒeƒŠƒAƒ‹”: " << m_model.materials.size() << std::endl;
+    // ãƒãƒ†ãƒªã‚¢ãƒ«æƒ…å ±
+    std::cout << "ãƒãƒ†ãƒªã‚¢ãƒ«æ•°: " << m_model.materials.size() << std::endl;
 
-    // ƒeƒNƒXƒ`ƒƒî•ñ
-    std::cout << "ƒeƒNƒXƒ`ƒƒ”: " << m_model.textures.size() << std::endl;
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£æƒ…å ±
+    std::cout << "ãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°: " << m_model.textures.size() << std::endl;
 
-    // ƒCƒ[ƒWî•ñ
-    std::cout << "ƒCƒ[ƒW”: " << m_model.images.size() << std::endl;
+    // ã‚¤ãƒ¡ãƒ¼ã‚¸æƒ…å ±
+    std::cout << "ã‚¤ãƒ¡ãƒ¼ã‚¸æ•°: " << m_model.images.size() << std::endl;
 
-    // ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ
-    std::cout << "ƒAƒjƒ[ƒVƒ‡ƒ“”: " << m_model.animations.size() << std::endl;
+    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±
+    std::cout << "ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ•°: " << m_model.animations.size() << std::endl;
 
-    // ƒoƒbƒtƒ@[î•ñ
-    std::cout << "ƒoƒbƒtƒ@[”: " << m_model.buffers.size() << std::endl;
+    // ãƒãƒƒãƒ•ã‚¡ãƒ¼æƒ…å ±
+    std::cout << "ãƒãƒƒãƒ•ã‚¡ãƒ¼æ•°: " << m_model.buffers.size() << std::endl;
     for (size_t i = 0; i < m_model.buffers.size(); ++i) {
         const auto& buffer = m_model.buffers[i];
-        std::cout << "  ƒoƒbƒtƒ@[ " << i << ": " << buffer.data.size() << " ƒoƒCƒg";
+        std::cout << "  ãƒãƒƒãƒ•ã‚¡ãƒ¼ " << i << ": " << buffer.data.size() << " ãƒã‚¤ãƒˆ";
         if (!buffer.uri.empty()) {
             std::cout << " (URI: " << buffer.uri << ")";
         }
         std::cout << std::endl;
     }
 
-    // ƒoƒbƒtƒ@[ƒrƒ…[î•ñ
-    std::cout << "ƒoƒbƒtƒ@[ƒrƒ…[”: " << m_model.bufferViews.size() << std::endl;
+    // ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼æƒ…å ±
+    std::cout << "ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼æ•°: " << m_model.bufferViews.size() << std::endl;
 
-    // ƒAƒNƒZƒT[î•ñ
-    std::cout << "ƒAƒNƒZƒT[”: " << m_model.accessors.size() << std::endl;
+    // ã‚¢ã‚¯ã‚»ã‚µãƒ¼æƒ…å ±
+    std::cout << "ã‚¢ã‚¯ã‚»ã‚µãƒ¼æ•°: " << m_model.accessors.size() << std::endl;
 
     std::cout << "========================\n" << std::endl;
 }
 
-// Ú×‚È\‘¢‰ğÍ
+// è©³ç´°ãªæ§‹é€ è§£æ
 void GLTFModel::analyzeStructure()
 {
     if (!m_loaded) {
-        std::cout << "ƒ‚ƒfƒ‹‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ" << std::endl;
+        std::cout << "ãƒ¢ãƒ‡ãƒ«ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“" << std::endl;
         return;
     }
 
-    std::cout << "\n=== Ú×\‘¢‰ğÍ ===" << std::endl;
+    std::cout << "\n=== è©³ç´°æ§‹é€ è§£æ ===" << std::endl;
 
-    // ƒV[ƒ“ŠK‘w‚Ì‰ğÍ
+    // ã‚·ãƒ¼ãƒ³éšå±¤ã®è§£æ
     analyzeScenes();
 
-    // ƒƒbƒVƒ…‚ÌÚ×‰ğÍ
+    // ãƒ¡ãƒƒã‚·ãƒ¥ã®è©³ç´°è§£æ
     analyzeMeshes();
 
-    // ƒ}ƒeƒŠƒAƒ‹‚ÌÚ×‰ğÍ
+    // ãƒãƒ†ãƒªã‚¢ãƒ«ã®è©³ç´°è§£æ
     analyzeMaterials();
 
-    // ƒAƒNƒZƒT[‚Æƒoƒbƒtƒ@[‚Ì‰ğÍ
+    // ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã¨ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®è§£æ
     analyzeBuffers();
 
     std::cout << "========================\n" << std::endl;
@@ -139,17 +139,17 @@ void GLTFModel::analyzeStructure()
 
 void GLTFModel::analyzeScenes()
 {
-    std::cout << "\n--- ƒV[ƒ“ŠK‘w‰ğÍ ---" << std::endl;
+    std::cout << "\n--- ã‚·ãƒ¼ãƒ³éšå±¤è§£æ ---" << std::endl;
 
     for (size_t i = 0; i < m_model.scenes.size(); ++i) {
         const auto& scene = m_model.scenes[i];
-        std::cout << "ƒV[ƒ“ " << i;
+        std::cout << "ã‚·ãƒ¼ãƒ³ " << i;
         if (!scene.name.empty()) {
             std::cout << " (\"" << scene.name << "\")";
         }
         std::cout << ":" << std::endl;
 
-        std::cout << "  ƒ‹[ƒgƒm[ƒh”: " << scene.nodes.size() << std::endl;
+        std::cout << "  ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰æ•°: " << scene.nodes.size() << std::endl;
         for (int nodeIdx : scene.nodes) {
             analyzeNodeHierarchy(nodeIdx, 1);
         }
@@ -165,44 +165,44 @@ void GLTFModel::analyzeNodeHierarchy(int nodeIndex, int indent)
     const auto& node = m_model.nodes[nodeIndex];
     std::string indentStr(indent * 2, ' ');
 
-    std::cout << indentStr << "ƒm[ƒh " << nodeIndex;
+    std::cout << indentStr << "ãƒãƒ¼ãƒ‰ " << nodeIndex;
     if (!node.name.empty()) {
         std::cout << " (\"" << node.name << "\")";
     }
     std::cout << ":" << std::endl;
 
-    // •ÏŠ·î•ñ
+    // å¤‰æ›æƒ…å ±
     if (!node.translation.empty()) {
-        std::cout << indentStr << "  •½sˆÚ“®: (" 
+        std::cout << indentStr << "  å¹³è¡Œç§»å‹•: (" 
             << node.translation[0] << ", " 
             << node.translation[1] << ", " 
             << node.translation[2] << ")" << std::endl;
     }
     if (!node.rotation.empty()) {
-        std::cout << indentStr << "  ‰ñ“](quat): (" 
+        std::cout << indentStr << "  å›è»¢(quat): (" 
             << node.rotation[0] << ", " 
             << node.rotation[1] << ", " 
             << node.rotation[2] << ", " 
             << node.rotation[3] << ")" << std::endl;
     }
     if (!node.scale.empty()) {
-        std::cout << indentStr << "  ƒXƒP[ƒ‹: (" 
+        std::cout << indentStr << "  ã‚¹ã‚±ãƒ¼ãƒ«: (" 
             << node.scale[0] << ", " 
             << node.scale[1] << ", " 
             << node.scale[2] << ")" << std::endl;
     }
     if (!node.matrix.empty()) {
-        std::cout << indentStr << "  s—ñ•ÏŠ·: ‚ ‚è (4x4)" << std::endl;
+        std::cout << indentStr << "  è¡Œåˆ—å¤‰æ›: ã‚ã‚Š (4x4)" << std::endl;
     }
 
-    // ƒƒbƒVƒ…QÆ
+    // ãƒ¡ãƒƒã‚·ãƒ¥å‚ç…§
     if (node.mesh >= 0) {
-        std::cout << indentStr << "  ƒƒbƒVƒ…QÆ: " << node.mesh << std::endl;
+        std::cout << indentStr << "  ãƒ¡ãƒƒã‚·ãƒ¥å‚ç…§: " << node.mesh << std::endl;
     }
 
-    // qƒm[ƒh
+    // å­ãƒãƒ¼ãƒ‰
     if (!node.children.empty()) {
-        std::cout << indentStr << "  qƒm[ƒh”: " << node.children.size() << std::endl;
+        std::cout << indentStr << "  å­ãƒãƒ¼ãƒ‰æ•°: " << node.children.size() << std::endl;
         for (int childIdx : node.children) {
             analyzeNodeHierarchy(childIdx, indent + 1);
         }
@@ -211,11 +211,11 @@ void GLTFModel::analyzeNodeHierarchy(int nodeIndex, int indent)
 
 void GLTFModel::analyzeMeshes()
 {
-    std::cout << "\n--- ƒƒbƒVƒ…Ú×‰ğÍ ---" << std::endl;
+    std::cout << "\n--- ãƒ¡ãƒƒã‚·ãƒ¥è©³ç´°è§£æ ---" << std::endl;
 
     for (size_t i = 0; i < m_model.meshes.size(); ++i) {
         const auto& mesh = m_model.meshes[i];
-        std::cout << "ƒƒbƒVƒ… " << i;
+        std::cout << "ãƒ¡ãƒƒã‚·ãƒ¥ " << i;
         if (!mesh.name.empty()) {
             std::cout << " (\"" << mesh.name << "\")";
         }
@@ -223,10 +223,10 @@ void GLTFModel::analyzeMeshes()
 
         for (size_t j = 0; j < mesh.primitives.size(); ++j) {
             const auto& primitive = mesh.primitives[j];
-            std::cout << "  ƒvƒŠƒ~ƒeƒBƒu " << j << ":" << std::endl;
+            std::cout << "  ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ– " << j << ":" << std::endl;
 
-            // •`‰æƒ‚[ƒh
-            std::cout << "    •`‰æƒ‚[ƒh: ";
+            // æç”»ãƒ¢ãƒ¼ãƒ‰
+            std::cout << "    æç”»ãƒ¢ãƒ¼ãƒ‰: ";
             switch (primitive.mode) {
             case TINYGLTF_MODE_POINTS: std::cout << "POINTS"; break;
             case TINYGLTF_MODE_LINE: std::cout << "LINES"; break;
@@ -235,26 +235,26 @@ void GLTFModel::analyzeMeshes()
             case TINYGLTF_MODE_TRIANGLES: std::cout << "TRIANGLES"; break;
             case TINYGLTF_MODE_TRIANGLE_STRIP: std::cout << "TRIANGLE_STRIP"; break;
             case TINYGLTF_MODE_TRIANGLE_FAN: std::cout << "TRIANGLE_FAN"; break;
-            default: std::cout << "•s–¾ (" << primitive.mode << ")"; break;
+            default: std::cout << "ä¸æ˜ (" << primitive.mode << ")"; break;
             }
             std::cout << std::endl;
 
-            // ’¸“_‘®«
-            std::cout << "    ’¸“_‘®«:" << std::endl;
+            // é ‚ç‚¹å±æ€§
+            std::cout << "    é ‚ç‚¹å±æ€§:" << std::endl;
             for (const auto& attr : primitive.attributes) {
-                std::cout << "      " << attr.first << " -> ƒAƒNƒZƒT[ " << attr.second << std::endl;
+                std::cout << "      " << attr.first << " -> ã‚¢ã‚¯ã‚»ã‚µãƒ¼ " << attr.second << std::endl;
                 analyzeAccessor(attr.second, 6);
             }
 
-            // ƒCƒ“ƒfƒbƒNƒX
+            // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
             if (primitive.indices >= 0) {
-                std::cout << "    ƒCƒ“ƒfƒbƒNƒX -> ƒAƒNƒZƒT[ " << primitive.indices << std::endl;
+                std::cout << "    ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ -> ã‚¢ã‚¯ã‚»ã‚µãƒ¼ " << primitive.indices << std::endl;
                 analyzeAccessor(primitive.indices, 6);
             }
 
-            // ƒ}ƒeƒŠƒAƒ‹
+            // ãƒãƒ†ãƒªã‚¢ãƒ«
             if (primitive.material >= 0) {
-                std::cout << "    ƒ}ƒeƒŠƒAƒ‹: " << primitive.material << std::endl;
+                std::cout << "    ãƒãƒ†ãƒªã‚¢ãƒ«: " << primitive.material << std::endl;
             }
         }
     }
@@ -269,7 +269,7 @@ void GLTFModel::analyzeAccessor(int accessorIndex, int indent)
     const auto& accessor = m_model.accessors[accessorIndex];
     std::string indentStr(indent, ' ');
 
-    std::cout << indentStr << "ƒ^ƒCƒv: ";
+    std::cout << indentStr << "ã‚¿ã‚¤ãƒ—: ";
     switch (accessor.type) {
     case TINYGLTF_TYPE_SCALAR: std::cout << "SCALAR"; break;
     case TINYGLTF_TYPE_VEC2: std::cout << "VEC2"; break;
@@ -278,9 +278,9 @@ void GLTFModel::analyzeAccessor(int accessorIndex, int indent)
     case TINYGLTF_TYPE_MAT2: std::cout << "MAT2"; break;
     case TINYGLTF_TYPE_MAT3: std::cout << "MAT3"; break;
     case TINYGLTF_TYPE_MAT4: std::cout << "MAT4"; break;
-    default: std::cout << "•s–¾"; break;
+    default: std::cout << "ä¸æ˜"; break;
     }
-    std::cout << ", ¬•ªƒ^ƒCƒv: ";
+    std::cout << ", æˆåˆ†ã‚¿ã‚¤ãƒ—: ";
     switch (accessor.componentType) {
     case TINYGLTF_COMPONENT_TYPE_BYTE: std::cout << "BYTE"; break;
     case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE: std::cout << "UNSIGNED_BYTE"; break;
@@ -288,13 +288,13 @@ void GLTFModel::analyzeAccessor(int accessorIndex, int indent)
     case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT: std::cout << "UNSIGNED_SHORT"; break;
     case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT: std::cout << "UNSIGNED_INT"; break;
     case TINYGLTF_COMPONENT_TYPE_FLOAT: std::cout << "FLOAT"; break;
-    default: std::cout << "•s–¾"; break;
+    default: std::cout << "ä¸æ˜"; break;
     }
-    std::cout << ", —v‘f”: " << accessor.count << std::endl;
+    std::cout << ", è¦ç´ æ•°: " << accessor.count << std::endl;
 
-    // ƒoƒEƒ“ƒfƒBƒ“ƒOî•ñ
+    // ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°æƒ…å ±
     if (!accessor.minValues.empty() && !accessor.maxValues.empty()) {
-        std::cout << indentStr << "”ÍˆÍ: min(";
+        std::cout << indentStr << "ç¯„å›²: min(";
         for (size_t k = 0; k < accessor.minValues.size(); ++k) {
             if (k > 0) std::cout << ", ";
             std::cout << accessor.minValues[k];
@@ -310,72 +310,72 @@ void GLTFModel::analyzeAccessor(int accessorIndex, int indent)
 
 void GLTFModel::analyzeMaterials()
 {
-    std::cout << "\n--- ƒ}ƒeƒŠƒAƒ‹Ú×‰ğÍ ---" << std::endl;
+    std::cout << "\n--- ãƒãƒ†ãƒªã‚¢ãƒ«è©³ç´°è§£æ ---" << std::endl;
 
     for (size_t i = 0; i < m_model.materials.size(); ++i) {
         const auto& material = m_model.materials[i];
-        std::cout << "ƒ}ƒeƒŠƒAƒ‹ " << i;
+        std::cout << "ãƒãƒ†ãƒªã‚¢ãƒ« " << i;
         if (!material.name.empty()) {
             std::cout << " (\"" << material.name << "\")";
         }
         std::cout << ":" << std::endl;
 
-        // PBRƒƒ^ƒŠƒbƒNƒ‰ƒtƒlƒX
+        // PBRãƒ¡ã‚¿ãƒªãƒƒã‚¯ãƒ©ãƒ•ãƒã‚¹
         const auto& pbr = material.pbrMetallicRoughness;
-        std::cout << "  PBRƒƒ^ƒŠƒbƒNƒ‰ƒtƒlƒX:" << std::endl;
-        std::cout << "    ƒx[ƒXƒJƒ‰[: (" 
+        std::cout << "  PBRãƒ¡ã‚¿ãƒªãƒƒã‚¯ãƒ©ãƒ•ãƒã‚¹:" << std::endl;
+        std::cout << "    ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼: (" 
             << pbr.baseColorFactor[0] << ", " 
             << pbr.baseColorFactor[1] << ", " 
             << pbr.baseColorFactor[2] << ", " 
             << pbr.baseColorFactor[3] << ")" << std::endl;
-        std::cout << "    ƒƒ^ƒŠƒbƒNŒW”: " << pbr.metallicFactor << std::endl;
-        std::cout << "    ƒ‰ƒtƒlƒXŒW”: " << pbr.roughnessFactor << std::endl;
+        std::cout << "    ãƒ¡ã‚¿ãƒªãƒƒã‚¯ä¿‚æ•°: " << pbr.metallicFactor << std::endl;
+        std::cout << "    ãƒ©ãƒ•ãƒã‚¹ä¿‚æ•°: " << pbr.roughnessFactor << std::endl;
 
         if (pbr.baseColorTexture.index >= 0) {
-            std::cout << "    ƒx[ƒXƒJƒ‰[ƒeƒNƒXƒ`ƒƒ: " << pbr.baseColorTexture.index << std::endl;
+            std::cout << "    ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£: " << pbr.baseColorTexture.index << std::endl;
         }
         if (pbr.metallicRoughnessTexture.index >= 0) {
-            std::cout << "    ƒƒ^ƒŠƒbƒN/ƒ‰ƒtƒlƒXƒeƒNƒXƒ`ƒƒ: " << pbr.metallicRoughnessTexture.index << std::endl;
+            std::cout << "    ãƒ¡ã‚¿ãƒªãƒƒã‚¯/ãƒ©ãƒ•ãƒã‚¹ãƒ†ã‚¯ã‚¹ãƒãƒ£: " << pbr.metallicRoughnessTexture.index << std::endl;
         }
 
-        // ‚»‚Ì‘¼‚Ì“Á«
+        // ãã®ä»–ã®ç‰¹æ€§
         if (material.normalTexture.index >= 0) {
-            std::cout << "  –@üƒeƒNƒXƒ`ƒƒ: " << material.normalTexture.index << std::endl;
+            std::cout << "  æ³•ç·šãƒ†ã‚¯ã‚¹ãƒãƒ£: " << material.normalTexture.index << std::endl;
         }
         if (material.emissiveTexture.index >= 0) {
-            std::cout << "  ƒGƒ~ƒbƒVƒuƒeƒNƒXƒ`ƒƒ: " << material.emissiveTexture.index << std::endl;
+            std::cout << "  ã‚¨ãƒŸãƒƒã‚·ãƒ–ãƒ†ã‚¯ã‚¹ãƒãƒ£: " << material.emissiveTexture.index << std::endl;
         }
 
-        std::cout << "  ƒGƒ~ƒbƒVƒuŒW”: (" 
+        std::cout << "  ã‚¨ãƒŸãƒƒã‚·ãƒ–ä¿‚æ•°: (" 
             << material.emissiveFactor[0] << ", " 
             << material.emissiveFactor[1] << ", " 
             << material.emissiveFactor[2] << ")" << std::endl;
 
-        std::cout << "  ƒAƒ‹ƒtƒ@ƒ‚[ƒh: " << material.alphaMode << std::endl;
+        std::cout << "  ã‚¢ãƒ«ãƒ•ã‚¡ãƒ¢ãƒ¼ãƒ‰: " << material.alphaMode << std::endl;
         if (material.alphaMode == "MASK") {
-            std::cout << "  ƒAƒ‹ƒtƒ@ƒJƒbƒgƒIƒt: " << material.alphaCutoff << std::endl;
+            std::cout << "  ã‚¢ãƒ«ãƒ•ã‚¡ã‚«ãƒƒãƒˆã‚ªãƒ•: " << material.alphaCutoff << std::endl;
         }
 
-        std::cout << "  —¼–Ê•`‰æ: " << (material.doubleSided ? "—LŒø" : "–³Œø") << std::endl;
+        std::cout << "  ä¸¡é¢æç”»: " << (material.doubleSided ? "æœ‰åŠ¹" : "ç„¡åŠ¹") << std::endl;
     }
 }
 
 void GLTFModel::analyzeBuffers()
 {
-    std::cout << "\n--- ƒoƒbƒtƒ@[/ƒAƒNƒZƒT[‰ğÍ ---" << std::endl;
+    std::cout << "\n--- ãƒãƒƒãƒ•ã‚¡ãƒ¼/ã‚¢ã‚¯ã‚»ã‚µãƒ¼è§£æ ---" << std::endl;
 
-    // ƒoƒbƒtƒ@[ƒrƒ…[‚ÌÚ×
-    std::cout << "ƒoƒbƒtƒ@[ƒrƒ…[Ú×:" << std::endl;
+    // ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼ã®è©³ç´°
+    std::cout << "ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼è©³ç´°:" << std::endl;
     for (size_t i = 0; i < m_model.bufferViews.size(); ++i) {
         const auto& bufferView = m_model.bufferViews[i];
-        std::cout << "  ƒrƒ…[ " << i << ": ƒoƒbƒtƒ@[ " << bufferView.buffer 
-            << ", ƒIƒtƒZƒbƒg " << bufferView.byteOffset 
-            << ", ’·‚³ " << bufferView.byteLength << " ƒoƒCƒg";
+        std::cout << "  ãƒ“ãƒ¥ãƒ¼ " << i << ": ãƒãƒƒãƒ•ã‚¡ãƒ¼ " << bufferView.buffer 
+            << ", ã‚ªãƒ•ã‚»ãƒƒãƒˆ " << bufferView.byteOffset 
+            << ", é•·ã• " << bufferView.byteLength << " ãƒã‚¤ãƒˆ";
         if (bufferView.byteStride > 0) {
-            std::cout << ", ƒXƒgƒ‰ƒCƒh " << bufferView.byteStride;
+            std::cout << ", ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ " << bufferView.byteStride;
         }
         if (bufferView.target != 0) {
-            std::cout << ", ƒ^[ƒQƒbƒg ";
+            std::cout << ", ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ ";
             switch (bufferView.target) {
             case TINYGLTF_TARGET_ARRAY_BUFFER: std::cout << "ARRAY_BUFFER"; break;
             case TINYGLTF_TARGET_ELEMENT_ARRAY_BUFFER: std::cout << "ELEMENT_ARRAY_BUFFER"; break;
@@ -386,76 +386,76 @@ void GLTFModel::analyzeBuffers()
     }
 }
 
-// glTF Model‚ÌŒŸØ
+// glTF Modelã®æ¤œè¨¼
 bool GLTFModel::validateModel()
 {
     if (!m_loaded) {
-        std::cout << "ƒ‚ƒfƒ‹‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ" << std::endl;
+        std::cout << "ãƒ¢ãƒ‡ãƒ«ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“" << std::endl;
         return false;
     }
 
-    std::cout << "\n=== ƒ‚ƒfƒ‹ŒŸØ ===" << std::endl;
+    std::cout << "\n=== ãƒ¢ãƒ‡ãƒ«æ¤œè¨¼ ===" << std::endl;
     bool isValid = true;
 
-    // Šî–{\‘¢‚ÌŒŸØ
+    // åŸºæœ¬æ§‹é€ ã®æ¤œè¨¼
     if (m_model.scenes.empty()) {
-        std::cerr << "ƒGƒ‰[: ƒV[ƒ“‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ã‚·ãƒ¼ãƒ³ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“" << std::endl;
         isValid = false;
     }
 
     if (m_model.defaultScene >= static_cast<int>(m_model.scenes.size())) {
-        std::cerr << "ƒGƒ‰[: ƒfƒtƒHƒ‹ƒgƒV[ƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ª–³Œø‚Å‚·" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚·ãƒ¼ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç„¡åŠ¹ã§ã™" << std::endl;
         isValid = false;
     }
 
-    // ƒAƒNƒZƒT[‚ÌŒŸØ
+    // ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã®æ¤œè¨¼
     for (size_t i = 0; i < m_model.accessors.size(); ++i) {
         const auto& accessor = m_model.accessors[i];
         if (accessor.bufferView >= static_cast<int>(m_model.bufferViews.size())) {
-            std::cerr << "ƒGƒ‰[: ƒAƒNƒZƒT[ " << i << " ‚Ì bufferView ƒCƒ“ƒfƒbƒNƒX‚ª–³Œø‚Å‚·" << std::endl;
+            std::cerr << "ã‚¨ãƒ©ãƒ¼: ã‚¢ã‚¯ã‚»ã‚µãƒ¼ " << i << " ã® bufferView ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç„¡åŠ¹ã§ã™" << std::endl;
             isValid = false;
         }
     }
 
-    // ƒoƒbƒtƒ@[ƒrƒ…[‚ÌŒŸØ
+    // ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼ã®æ¤œè¨¼
     for (size_t i = 0; i < m_model.bufferViews.size(); ++i) {
         const auto& bufferView = m_model.bufferViews[i];
         if (bufferView.buffer >= static_cast<int>(m_model.buffers.size())) {
-            std::cerr << "ƒGƒ‰[: ƒoƒbƒtƒ@[ƒrƒ…[ " << i << " ‚Ì buffer ƒCƒ“ƒfƒbƒNƒX‚ª–³Œø‚Å‚·" << std::endl;
+            std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼ " << i << " ã® buffer ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç„¡åŠ¹ã§ã™" << std::endl;
             isValid = false;
         } else {
             const auto& buffer = m_model.buffers[bufferView.buffer];
             if (bufferView.byteOffset + bufferView.byteLength > buffer.data.size()) {
-                std::cerr << "ƒGƒ‰[: ƒoƒbƒtƒ@[ƒrƒ…[ " << i << " ‚ªƒoƒbƒtƒ@[”ÍˆÍ‚ğ’´‚¦‚Ä‚¢‚Ü‚·" << std::endl;
+                std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒãƒƒãƒ•ã‚¡ãƒ¼ãƒ“ãƒ¥ãƒ¼ " << i << " ãŒãƒãƒƒãƒ•ã‚¡ãƒ¼ç¯„å›²ã‚’è¶…ãˆã¦ã„ã¾ã™" << std::endl;
                 isValid = false;
             }
         }
     }
 
-    // ƒƒbƒVƒ…‚ÌŒŸØ
+    // ãƒ¡ãƒƒã‚·ãƒ¥ã®æ¤œè¨¼
     for (size_t i = 0; i < m_model.meshes.size(); ++i) {
         const auto& mesh = m_model.meshes[i];
         for (size_t j = 0; j < mesh.primitives.size(); ++j) {
             const auto& primitive = mesh.primitives[j];
 
-            // •K{‘®«‚ÌŠm”F
+            // å¿…é ˆå±æ€§ã®ç¢ºèª
             if (primitive.attributes.find("POSITION") == primitive.attributes.end()) {
-                std::cerr << "ƒGƒ‰[: ƒƒbƒVƒ… " << i << " ƒvƒŠƒ~ƒeƒBƒu " << j << " ‚ÉPOSITION‘®«‚ª‚ ‚è‚Ü‚¹‚ñ" << std::endl;
+                std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ¡ãƒƒã‚·ãƒ¥ " << i << " ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ– " << j << " ã«POSITIONå±æ€§ãŒã‚ã‚Šã¾ã›ã‚“" << std::endl;
                 isValid = false;
             }
 
-            // ƒCƒ“ƒfƒbƒNƒX‚ÌŒŸØ
+            // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ¤œè¨¼
             if (primitive.indices >= static_cast<int>(m_model.accessors.size())) {
-                std::cerr << "ƒGƒ‰[: ƒƒbƒVƒ… " << i << " ƒvƒŠƒ~ƒeƒBƒu " << j << " ‚ÌƒCƒ“ƒfƒbƒNƒX‚ª–³Œø‚Å‚·" << std::endl;
+                std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ¡ãƒƒã‚·ãƒ¥ " << i << " ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ– " << j << " ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç„¡åŠ¹ã§ã™" << std::endl;
                 isValid = false;
             }
         }
     }
 
     if (isValid) {
-        std::cout << "O ƒ‚ƒfƒ‹ŒŸØ‚ª¬Œ÷‚µ‚Ü‚µ‚½" << std::endl;
+        std::cout << "O ãƒ¢ãƒ‡ãƒ«æ¤œè¨¼ãŒæˆåŠŸã—ã¾ã—ãŸ" << std::endl;
     } else {
-        std::cout << "X ƒ‚ƒfƒ‹ŒŸØ‚ÅƒGƒ‰[‚ªŒ©‚Â‚©‚è‚Ü‚µ‚½" << std::endl;
+        std::cout << "X ãƒ¢ãƒ‡ãƒ«æ¤œè¨¼ã§ã‚¨ãƒ©ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸ" << std::endl;
     }
 
     std::cout << "========================\n" << std::endl;

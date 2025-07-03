@@ -1,4 +1,4 @@
-#include "ShaderManager.h"
+ï»¿#include "ShaderManager.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -15,7 +15,7 @@ ShaderManager::~ShaderManager() {
 GLuint ShaderManager::compileShader(const std::string& source, GLenum shaderType) {
     GLuint shader = glCreateShader(shaderType);
     if (shader == 0) {
-        std::cerr << "ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return 0;
     }
 
@@ -23,7 +23,7 @@ GLuint ShaderManager::compileShader(const std::string& source, GLenum shaderType
     glShaderSource(shader, 1, &sourcePtr, nullptr);
     glCompileShader(shader);
 
-    // ƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚ğƒ`ƒFƒbƒN
+    // ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ã‚’ãƒã‚§ãƒƒã‚¯
     std::string shaderTypeName = (shaderType == GL_VERTEX_SHADER) ? "VERTEX" : "FRAGMENT";
     checkCompileErrors(shader, shaderTypeName);
 
@@ -40,7 +40,7 @@ GLuint ShaderManager::compileShader(const std::string& source, GLenum shaderType
 bool ShaderManager::linkProgram(GLuint vertexShader, GLuint fragmentShader) {
     m_programID = glCreateProgram();
     if (m_programID == 0) {
-        std::cerr << "ƒVƒF[ƒ_[ƒvƒƒOƒ‰ƒ€‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
@@ -58,7 +58,7 @@ bool ShaderManager::linkProgram(GLuint vertexShader, GLuint fragmentShader) {
         return false;
     }
 
-    // ƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg‚Í•s—v‚É‚È‚Á‚½‚Ì‚Åíœ
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ä¸è¦ã«ãªã£ãŸã®ã§å‰Šé™¤
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
@@ -71,7 +71,7 @@ void ShaderManager::checkCompileErrors(GLuint shader, const std::string& type) {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-        std::cerr << "ƒVƒF[ƒ_[ƒRƒ“ƒpƒCƒ‹ƒGƒ‰[ [" << type << "]:\n" << infoLog << std::endl;
+        std::cerr << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ [" << type << "]:\n" << infoLog << std::endl;
     }
 }
 
@@ -81,70 +81,70 @@ void ShaderManager::checkLinkErrors(GLuint program) {
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
-        std::cerr << "ƒVƒF[ƒ_[ƒŠƒ“ƒNƒGƒ‰[:\n" << infoLog << std::endl;
+        std::cerr << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªãƒ³ã‚¯ã‚¨ãƒ©ãƒ¼:\n" << infoLog << std::endl;
     }
 }
 
 GLint ShaderManager::getUniformLocation(const std::string& name) {
-    // ƒLƒƒƒbƒVƒ…‚©‚çˆÊ’u‚ğŒŸõ
+    // ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰ä½ç½®ã‚’æ¤œç´¢
     auto it = m_uniformLocations.find(name);
     if (it != m_uniformLocations.end()) {
         return it->second;
     }
 
-    // V‚µ‚­UniformˆÊ’u‚ğæ“¾‚µ‚ÄƒLƒƒƒbƒVƒ…‚É•Û‘¶
+    // æ–°ã—ãUniformä½ç½®ã‚’å–å¾—ã—ã¦ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ä¿å­˜
     GLint location = glGetUniformLocation(m_programID, name.c_str());
     if (location == -1) {
-        std::cerr << "Œx: Uniform•Ï” '" << name << "' ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ" << std::endl;
+        std::cerr << "è­¦å‘Š: Uniformå¤‰æ•° '" << name << "' ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“" << std::endl;
     }
     m_uniformLocations[name] = location;
     return location;
 }
 
 bool ShaderManager::createShader(const std::string& vertexSource, const std::string& fragmentSource) {
-    cleanup(); // Šù‘¶‚ÌƒVƒF[ƒ_[‚ğƒNƒŠ[ƒ“ƒAƒbƒv
+    cleanup(); // æ—¢å­˜ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
 
-    // ’¸“_ƒVƒF[ƒ_[‚ğƒRƒ“ƒpƒCƒ‹
+    // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
     GLuint vertexShader = compileShader(vertexSource, GL_VERTEX_SHADER);
     if (vertexShader == 0) {
-        std::cerr << "’¸“_ƒVƒF[ƒ_[‚ÌƒRƒ“ƒpƒCƒ‹‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    // ƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[‚ğƒRƒ“ƒpƒCƒ‹
+    // ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
     GLuint fragmentShader = compileShader(fragmentSource, GL_FRAGMENT_SHADER);
     if (fragmentShader == 0) {
-        std::cerr << "ƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[‚ÌƒRƒ“ƒpƒCƒ‹‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         glDeleteShader(vertexShader);
         return false;
     }
 
-    // ƒvƒƒOƒ‰ƒ€‚ğƒŠƒ“ƒN
+    // ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’ãƒªãƒ³ã‚¯
     if (!linkProgram(vertexShader, fragmentShader)) {
-        std::cerr << "ƒVƒF[ƒ_[ƒvƒƒOƒ‰ƒ€‚ÌƒŠƒ“ƒN‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ãƒªãƒ³ã‚¯ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
     m_isCompiled = true;
-    std::cout << "ƒVƒF[ƒ_[‚ª³í‚ÉƒRƒ“ƒpƒCƒ‹EƒŠƒ“ƒN‚³‚ê‚Ü‚µ‚½ (Program ID: " << m_programID << ")" << std::endl;
+    std::cout << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒæ­£å¸¸ã«ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ»ãƒªãƒ³ã‚¯ã•ã‚Œã¾ã—ãŸ (Program ID: " << m_programID << ")" << std::endl;
     return true;
 }
 
 bool ShaderManager::createShaderFromFiles(const std::string& vertexPath, const std::string& fragmentPath) {
-    // ƒtƒ@ƒCƒ‹‚©‚ç’¸“_ƒVƒF[ƒ_[‚ğ“Ç‚İ‚İ
+    // ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã¿
     std::ifstream vertexFile(vertexPath);
     if (!vertexFile.is_open()) {
-        std::cerr << "’¸“_ƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚Ü‚¹‚ñ: " << vertexPath << std::endl;
+        std::cerr << "é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“: " << vertexPath << std::endl;
         return false;
     }
     std::stringstream vertexStream;
     vertexStream << vertexFile.rdbuf();
     std::string vertexSource = vertexStream.str();
 
-    // ƒtƒ@ƒCƒ‹‚©‚çƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[‚ğ“Ç‚İ‚İ
+    // ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã¿
     std::ifstream fragmentFile(fragmentPath);
     if (!fragmentFile.is_open()) {
-        std::cerr << "ƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_[ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚Ü‚¹‚ñ: " << fragmentPath << std::endl;
+        std::cerr << "ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ã¾ã›ã‚“: " << fragmentPath << std::endl;
         return false;
     }
     std::stringstream fragmentStream;
@@ -158,7 +158,7 @@ void ShaderManager::use() {
     if (m_isCompiled && m_programID != 0) {
         glUseProgram(m_programID);
     } else {
-        std::cerr << "Œx: –³Œø‚ÈƒVƒF[ƒ_[ƒvƒƒOƒ‰ƒ€‚ğg—p‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "è­¦å‘Š: ç„¡åŠ¹ãªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’ä½¿ç”¨ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" << std::endl;
     }
 }
 
@@ -166,7 +166,7 @@ void ShaderManager::unuse() {
     glUseProgram(0);
 }
 
-// ? glmŒ^‚ÌUniform•Ï”İ’èŠÖ”ŒQ - glm“‡‚ÌŠjS‹@”\
+// ? glmå‹ã®Uniformå¤‰æ•°è¨­å®šé–¢æ•°ç¾¤ - glmçµ±åˆã®æ ¸å¿ƒæ©Ÿèƒ½
 void ShaderManager::setUniform(const std::string& name, const glm::mat4& matrix) {
     GLint location = getUniformLocation(name);
     if (location != -1) {
@@ -223,13 +223,13 @@ void ShaderManager::setUniform(const std::string& name, bool value) {
     }
 }
 
-// ? MVPs—ñİ’è—p‚Ì•Ö—˜ŠÖ” - Phase 4.3‚Åd—v
+// ? MVPè¡Œåˆ—è¨­å®šç”¨ã®ä¾¿åˆ©é–¢æ•° - Phase 4.3ã§é‡è¦
 void ShaderManager::setMVPMatrices(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) {
     setUniform("u_model", model);
     setUniform("u_view", view);
     setUniform("u_projection", projection);
 
-    // MVPs—ñ‚ÌÏ‚àŒvZ‚µ‚Äİ’èiƒpƒtƒH[ƒ}ƒ“ƒXÅ“K‰»j
+    // MVPè¡Œåˆ—ã®ç©ã‚‚è¨ˆç®—ã—ã¦è¨­å®šï¼ˆãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹æœ€é©åŒ–ï¼‰
     glm::mat4 mvp = projection * view * model;
     setUniform("u_mvp", mvp);
 }
@@ -257,13 +257,13 @@ void ShaderManager::cleanup() {
 
 void ShaderManager::printActiveUniforms() {
     if (!m_isCompiled) {
-        std::cout << "ƒVƒF[ƒ_[‚ªƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" << std::endl;
+        std::cout << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“" << std::endl;
         return;
     }
 
     GLint uniformCount;
     glGetProgramiv(m_programID, GL_ACTIVE_UNIFORMS, &uniformCount);
-    std::cout << "ƒAƒNƒeƒBƒu‚ÈUniform•Ï”‚Ì”: " << uniformCount << std::endl;
+    std::cout << "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªUniformå¤‰æ•°ã®æ•°: " << uniformCount << std::endl;
 
     GLint maxLength;
     glGetProgramiv(m_programID, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
@@ -283,13 +283,13 @@ void ShaderManager::printActiveUniforms() {
 
 void ShaderManager::printActiveAttributes() {
     if (!m_isCompiled) {
-        std::cout << "ƒVƒF[ƒ_[‚ªƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" << std::endl;
+        std::cout << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãŒã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“" << std::endl;
         return;
     }
 
     GLint attributeCount;
     glGetProgramiv(m_programID, GL_ACTIVE_ATTRIBUTES, &attributeCount);
-    std::cout << "ƒAƒNƒeƒBƒu‚È‘®«‚Ì”: " << attributeCount << std::endl;
+    std::cout << "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªå±æ€§ã®æ•°: " << attributeCount << std::endl;
 
     GLint maxLength;
     glGetProgramiv(m_programID, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxLength);
@@ -307,7 +307,7 @@ void ShaderManager::printActiveAttributes() {
     }
 }
 
-// Šî–{“I‚ÈƒVƒF[ƒ_[ƒ\[ƒX‚Ì’ñ‹Ÿ
+// åŸºæœ¬çš„ãªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚½ãƒ¼ã‚¹ã®æä¾›
 std::string ShaderManager::getBasicVertexShader() {
     return R"(
 #version 330 core

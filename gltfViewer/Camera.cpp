@@ -1,9 +1,9 @@
-#include "Camera.h"
+ï»¿#include "Camera.h"
 #include <iostream>
 #include <algorithm>
 #include <cmath>
 
-// === ƒRƒ“ƒXƒgƒ‰ƒNƒ^ ===
+// === ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ ===
 
 Camera::Camera(const glm::vec3& position, const glm::vec3& target, const glm::vec3& up)
     : m_position(position)
@@ -20,17 +20,17 @@ Camera::Camera(const glm::vec3& position, const glm::vec3& target, const glm::ve
     , m_viewMatrixDirty(true)
     , m_projectionMatrixDirty(true)
 {
-    // –Ú•W“_‚©‚ç‰ŠúŠp“x‚ğŒvZ
+    // ç›®æ¨™ç‚¹ã‹ã‚‰åˆæœŸè§’åº¦ã‚’è¨ˆç®—
     glm::vec3 direction = glm::normalize(target - position);
 
-    // ƒˆ[Šp“x‚ğŒvZiXZ•½–Ê‚Å‚ÌŠp“xj
+    // ãƒ¨ãƒ¼è§’åº¦ã‚’è¨ˆç®—ï¼ˆXZå¹³é¢ã§ã®è§’åº¦ï¼‰
     m_yaw = std::atan2(direction.x, direction.z);
 
-    // ƒsƒbƒ`Šp“x‚ğŒvZiY²‚Å‚ÌŠp“xj
+    // ãƒ”ãƒƒãƒè§’åº¦ã‚’è¨ˆç®—ï¼ˆYè»¸ã§ã®è§’åº¦ï¼‰
     float horizontalDistance = std::sqrt(direction.x * direction.x + direction.z * direction.z);
     m_pitch = std::atan2(-direction.y, horizontalDistance);
 
-    // “à•”ƒxƒNƒgƒ‹‚ğXV
+    // å†…éƒ¨ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ›´æ–°
     updateVectors();
     updateViewMatrix();
     updateProjectionMatrix();
@@ -41,7 +41,7 @@ Camera::Camera(const glm::vec3& position, const glm::vec3& target, const glm::ve
         << glm::degrees(m_pitch) << " degrees" << std::endl;
 }
 
-// === ˆÊ’uEŒü‚«‘€ì ===
+// === ä½ç½®ãƒ»å‘ãæ“ä½œ ===
 
 void Camera::setPosition(const glm::vec3& position) {
     m_position = position;
@@ -51,17 +51,17 @@ void Camera::setPosition(const glm::vec3& position) {
 void Camera::setTarget(const glm::vec3& target) {
     glm::vec3 direction = glm::normalize(target - m_position);
 
-    // ƒˆ[Šp“x‚ğŒvZ
+    // ãƒ¨ãƒ¼è§’åº¦ã‚’è¨ˆç®—
     m_yaw = std::atan2(direction.x, direction.z);
 
-    // ƒsƒbƒ`Šp“x‚ğŒvZ
+    // ãƒ”ãƒƒãƒè§’åº¦ã‚’è¨ˆç®—
     float horizontalDistance = std::sqrt(direction.x * direction.x + direction.z * direction.z);
     m_pitch = constrainPitch(std::atan2(-direction.y, horizontalDistance));
 
     updateVectors();
 }
 
-// === ˆÚ“®‘€ì ===
+// === ç§»å‹•æ“ä½œ ===
 
 void Camera::moveForward(float distance) {
     m_position += m_forwardV * distance;
@@ -88,18 +88,18 @@ void Camera::moveRight(float distance) {
 }
 
 void Camera::moveUp(float distance) {
-    m_position += m_upV * distance;  // ƒJƒƒ‰‚Ìƒ[ƒJƒ‹ƒAƒbƒvƒxƒNƒgƒ‹‚ğg—p
+    m_position += m_upV * distance;  // ã‚«ãƒ¡ãƒ©ã®ãƒ­ãƒ¼ã‚«ãƒ«ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½¿ç”¨
     m_viewMatrixDirty = true;
     updateViewMatrix();
 }
 
 void Camera::moveDown(float distance) {
-    m_position -= m_upV * distance;  // ƒJƒƒ‰‚Ìƒ[ƒJƒ‹ƒAƒbƒvƒxƒNƒgƒ‹‚ğg—p
+    m_position -= m_upV * distance;  // ã‚«ãƒ¡ãƒ©ã®ãƒ­ãƒ¼ã‚«ãƒ«ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½¿ç”¨
     m_viewMatrixDirty = true;
     updateViewMatrix();
 }
 
-// === ‰ñ“]‘€ì ===
+// === å›è»¢æ“ä½œ ===
 
 void Camera::setYaw(float yaw) {
     m_yaw = yaw;
@@ -127,7 +127,7 @@ void Camera::addPitch(float deltaPitch) {
     updateVectors();
 }
 
-// === “Š‰eİ’è ===
+// === æŠ•å½±è¨­å®š ===
 
 void Camera::setPerspective(float fov, float aspectRatio, float nearPlane, float farPlane) {
     m_projectionType = ProjectionType::PERSPECTIVE;
@@ -166,23 +166,23 @@ void Camera::setAspectRatio(float aspectRatio) {
     }
 }
 
-// === s—ñæ“¾ ===
+// === è¡Œåˆ—å–å¾— ===
 
 glm::mat4 Camera::getViewProjectionMatrix() const {
     return getProjectionMatrix() * getViewMatrix();
 }
 
-// === ©“®ƒtƒBƒbƒeƒBƒ“ƒO ===
+// === è‡ªå‹•ãƒ•ã‚£ãƒƒãƒ†ã‚£ãƒ³ã‚° ===
 
 void Camera::fitToBoundingBox(const glm::vec3& boundingBoxMin, const glm::vec3& boundingBoxMax, float padding) {
-    // ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚Ì’†S‚ğŒvZ
+    // ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ä¸­å¿ƒã‚’è¨ˆç®—
     glm::vec3 center = (boundingBoxMin + boundingBoxMax) * 0.5f;
 
-    // ƒoƒEƒ“ƒfƒBƒ“ƒOƒ{ƒbƒNƒX‚ÌƒTƒCƒY‚ğŒvZ
+    // ãƒã‚¦ãƒ³ãƒ‡ã‚£ãƒ³ã‚°ãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
     glm::vec3 size = boundingBoxMax - boundingBoxMin;
     float maxDimension = std::max({size.x, size.y, size.z});
 
-    // ˆÀ‘Sƒ`ƒFƒbƒN
+    // å®‰å…¨ãƒã‚§ãƒƒã‚¯
     if (maxDimension <= 0.0f) {
         std::cerr << "Warning: Invalid bounding box size, using default camera position" << std::endl;
         setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -190,26 +190,26 @@ void Camera::fitToBoundingBox(const glm::vec3& boundingBoxMin, const glm::vec3& 
         return;
     }
 
-    // “§‹“Š‰e‚Ìê‡A‹–ìŠp‚ÉŠî‚Ã‚¢‚Ä“KØ‚È‹——£‚ğŒvZ
+    // é€è¦–æŠ•å½±ã®å ´åˆã€è¦–é‡è§’ã«åŸºã¥ã„ã¦é©åˆ‡ãªè·é›¢ã‚’è¨ˆç®—
     float distance;
     if (m_projectionType == ProjectionType::PERSPECTIVE) {
-        // ‹–ìŠp‚Ì”¼•ª‚Ìƒ^ƒ“ƒWƒFƒ“ƒg‚ğg—p‚µ‚Ä‹——£‚ğŒvZ
+        // è¦–é‡è§’ã®åŠåˆ†ã®ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆã‚’ä½¿ç”¨ã—ã¦è·é›¢ã‚’è¨ˆç®—
         float halfFov = m_fov * 0.5f;
         distance = (maxDimension * padding) / (2.0f * std::tan(halfFov));
 
-        // Å¬‹——£‚ğ•ÛØ
+        // æœ€å°è·é›¢ã‚’ä¿è¨¼
         distance = std::max(distance, maxDimension * 0.5f);
     } else {
-        // ³Ë‰e‚Ìê‡‚ÍŒÅ’è‹——£
+        // æ­£å°„å½±ã®å ´åˆã¯å›ºå®šè·é›¢
         distance = maxDimension * padding;
     }
 
-    // ƒJƒƒ‰‚ÌˆÊ’u‚ğİ’èi­‚µã‚ÆŒã‚ë‚©‚çŒ©‰º‚ë‚·Šp“xj
+    // ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’è¨­å®šï¼ˆå°‘ã—ä¸Šã¨å¾Œã‚ã‹ã‚‰è¦‹ä¸‹ã‚ã™è§’åº¦ï¼‰
     glm::vec3 offset = glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)) * distance;
     setPosition(center + offset);
     setTarget(center);
 
-    // ‹ßE‰“ƒNƒŠƒbƒv–Ê‚ğ“KØ‚Éİ’è
+    // è¿‘ãƒ»é ã‚¯ãƒªãƒƒãƒ—é¢ã‚’é©åˆ‡ã«è¨­å®š
     float newNear = std::max(0.01f, distance - maxDimension * padding);
     float newFar = distance + maxDimension * padding * 2.0f;
 
@@ -228,7 +228,7 @@ void Camera::fitToBoundingBox(const glm::vec3& boundingBoxMin, const glm::vec3& 
     std::cout << "  Near: " << newNear << ", Far: " << newFar << std::endl;
 }
 
-// === ƒfƒoƒbƒO ===
+// === ãƒ‡ãƒãƒƒã‚° ===
 
 void Camera::debugPrint() const {
     std::cout << "=== Camera Debug Info ===" << std::endl;
@@ -250,11 +250,11 @@ void Camera::debugPrint() const {
     }
     std::cout << "Near: " << m_nearPlane << ", Far: " << m_farPlane << std::endl;
 
-    // s—ñ‚Ì—LŒø«‚ğƒ`ƒFƒbƒN
+    // è¡Œåˆ—ã®æœ‰åŠ¹æ€§ã‚’ãƒã‚§ãƒƒã‚¯
     const glm::mat4& viewMatrix = getViewMatrix();
     const glm::mat4& projMatrix = getProjectionMatrix();
 
-    // NaN/Infƒ`ƒFƒbƒN
+    // NaN/Infãƒã‚§ãƒƒã‚¯
     bool viewMatrixValid = true;
     bool projMatrixValid = true;
 
@@ -274,10 +274,10 @@ void Camera::debugPrint() const {
     std::cout << "=========================" << std::endl;
 }
 
-// === ƒvƒ‰ƒCƒx[ƒgƒƒ\ƒbƒh ===
+// === ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ¡ã‚½ãƒƒãƒ‰ ===
 
 void Camera::updateVectors() {
-    // ƒIƒCƒ‰[Šp‚©‚ç•ûŒüƒxƒNƒgƒ‹‚ğŒvZi³‚µ‚¢”Šw“I•ÏŠ·j
+    // ã‚ªã‚¤ãƒ©ãƒ¼è§’ã‹ã‚‰æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ï¼ˆæ­£ã—ã„æ•°å­¦çš„å¤‰æ›ï¼‰
     glm::vec3 front;
     front.x = std::cos(m_yaw) * std::cos(m_pitch);
     front.y = std::sin(m_pitch);
@@ -285,20 +285,20 @@ void Camera::updateVectors() {
 
     m_forwardV = glm::normalize(front);
 
-    // ‰EƒxƒNƒgƒ‹‚ğŒvZiŠOÏj
+    // å³ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ï¼ˆå¤–ç©ï¼‰
     m_rightV = glm::normalize(glm::cross(m_forwardV, m_worldUp));
 
-    // ƒAƒbƒvƒxƒNƒgƒ‹‚ğŒvZiŠOÏj
+    // ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ï¼ˆå¤–ç©ï¼‰
     m_upV = glm::normalize(glm::cross(m_rightV, m_forwardV));
 
-    // ƒrƒ…[s—ñ‚ÌXVƒtƒ‰ƒO‚ğİ’è
+    // ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®æ›´æ–°ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
     m_viewMatrixDirty = true;
     updateViewMatrix();
 }
 
 void Camera::updateViewMatrix() const {
     if (m_viewMatrixDirty) {
-        // glm::lookAt()‚ğg—p‚µ‚Äƒrƒ…[s—ñ‚ğì¬
+        // glm::lookAt()ã‚’ä½¿ç”¨ã—ã¦ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’ä½œæˆ
         m_viewMatrix = glm::lookAt(m_position, m_position + m_forwardV, m_upV);
         m_viewMatrixDirty = false;
     }
@@ -307,10 +307,10 @@ void Camera::updateViewMatrix() const {
 void Camera::updateProjectionMatrix() const {
     if (m_projectionMatrixDirty) {
         if (m_projectionType == ProjectionType::PERSPECTIVE) {
-            // glm::perspective()‚ğg—p‚µ‚Ä“§‹“Š‰es—ñ‚ğì¬
+            // glm::perspective()ã‚’ä½¿ç”¨ã—ã¦é€è¦–æŠ•å½±è¡Œåˆ—ã‚’ä½œæˆ
             m_projectionMatrix = glm::perspective(m_fov, m_aspectRatio, m_nearPlane, m_farPlane);
         } else {
-            // glm::ortho()‚ğg—p‚µ‚Ä³Ë‰es—ñ‚ğì¬
+            // glm::ortho()ã‚’ä½¿ç”¨ã—ã¦æ­£å°„å½±è¡Œåˆ—ã‚’ä½œæˆ
             m_projectionMatrix = glm::ortho(m_left, m_right, m_bottom, m_top, m_nearPlane, m_farPlane);
         }
         m_projectionMatrixDirty = false;
@@ -318,7 +318,7 @@ void Camera::updateProjectionMatrix() const {
 }
 
 float Camera::constrainPitch(float pitch) const {
-    // ƒsƒbƒ`‚ğ-89“x‚©‚ç+89“x‚Ì”ÍˆÍ‚É§ŒÀiƒWƒ“ƒoƒ‹ƒƒbƒN‚ğ–h‚®j
+    // ãƒ”ãƒƒãƒã‚’-89åº¦ã‹ã‚‰+89åº¦ã®ç¯„å›²ã«åˆ¶é™ï¼ˆã‚¸ãƒ³ãƒãƒ«ãƒ­ãƒƒã‚¯ã‚’é˜²ãï¼‰
     const float maxPitch = glm::radians(89.0f);
     return std::max(-maxPitch, std::min(maxPitch, pitch));
 }

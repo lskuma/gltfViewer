@@ -1,4 +1,4 @@
-#include "OpenGLRenderer.h"
+ï»¿#include "OpenGLRenderer.h"
 #include <iostream>
 #include <cmath>
 #include <tiny_gltf.h>
@@ -25,14 +25,14 @@ OpenGLRenderer::~OpenGLRenderer() {
 }
 
 bool OpenGLRenderer::initializeOpenGL() {
-    // ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ğæ“¾
+    // ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’å–å¾—
     m_hDC = GetDC(m_hWnd);
     if (!m_hDC) {
-        std::cerr << "ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    // ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚ğİ’è
+    // ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’è¨­å®š
     PIXELFORMATDESCRIPTOR pfd = {};
     pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
     pfd.nVersion = 1;
@@ -45,40 +45,40 @@ bool OpenGLRenderer::initializeOpenGL() {
 
     int pixelFormat = ChoosePixelFormat(m_hDC, &pfd);
     if (!pixelFormat) {
-        std::cerr << "“KØ‚ÈƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ" << std::endl;
+        std::cerr << "é©åˆ‡ãªãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“" << std::endl;
         return false;
     }
 
     if (!SetPixelFormat(m_hDC, pixelFormat, &pfd)) {
-        std::cerr << "ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ãƒ”ã‚¯ã‚»ãƒ«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    // OpenGLƒŒƒ“ƒ_ƒŠƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚ğì¬
+    // OpenGLãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ä½œæˆ
     m_hRC = wglCreateContext(m_hDC);
     if (!m_hRC) {
-        std::cerr << "OpenGLƒRƒ“ƒeƒLƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "OpenGLã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
     if (!wglMakeCurrent(m_hDC, m_hRC)) {
-        std::cerr << "OpenGLƒRƒ“ƒeƒLƒXƒg‚Ì—LŒø‰»‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "OpenGLã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®æœ‰åŠ¹åŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    // GLEW‚ğ‰Šú‰»
+    // GLEWã‚’åˆæœŸåŒ–
     GLenum err = glewInit();
     if (err != GLEW_OK) {
-        std::cerr << "GLEW‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½: " << glewGetErrorString(err) << std::endl;
+        std::cerr << "GLEWã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ: " << glewGetErrorString(err) << std::endl;
         return false;
     }
 
-    // OpenGLî•ñ‚ğ•\¦
+    // OpenGLæƒ…å ±ã‚’è¡¨ç¤º
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 
-    // OpenGL‚Ìİ’è
+    // OpenGLã®è¨­å®š
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 
@@ -86,79 +86,79 @@ bool OpenGLRenderer::initializeOpenGL() {
 }
 
 void OpenGLRenderer::setupTriangle() {
-    // ƒJƒ‰ƒtƒ‹‚ÈOŠpŒ`‚Ì’¸“_ƒf[ƒ^iˆÊ’u + Fj
+    // ã‚«ãƒ©ãƒ•ãƒ«ãªä¸‰è§’å½¢ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ï¼ˆä½ç½® + è‰²ï¼‰
     float vertices[] = {
-        // ˆÊ’u           // F
-        -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // ¶‰º - Ô
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // ‰E‰º - —Î
-        0.0f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f   // ã   - Â
+        // ä½ç½®           // è‰²
+        -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // å·¦ä¸‹ - èµ¤
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // å³ä¸‹ - ç·‘
+        0.0f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f   // ä¸Š   - é’
     };
 
-    glGenVertexArrays(1, &m_demoVAO);  // m_VAO ¨ m_demoVAO
-    glGenBuffers(1, &m_demoVBO);       // m_VBO ¨ m_demoVBO
+    glGenVertexArrays(1, &m_demoVAO);  // m_VAO â†’ m_demoVAO
+    glGenBuffers(1, &m_demoVBO);       // m_VBO â†’ m_demoVBO
 
     glBindVertexArray(m_demoVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_demoVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // ˆÊ’u‘®« (location = 0)
+    // ä½ç½®å±æ€§ (location = 0)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // F‘®« (location = 1)
+    // è‰²å±æ€§ (location = 1)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    std::cout << "OŠpŒ`ƒƒbƒVƒ…‚ğƒZƒbƒgƒAƒbƒv‚µ‚Ü‚µ‚½ (VAO: " << m_demoVAO << ", VBO: " << m_demoVBO << ")" << std::endl;
+    std::cout << "ä¸‰è§’å½¢ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã—ã¾ã—ãŸ (VAO: " << m_demoVAO << ", VBO: " << m_demoVBO << ")" << std::endl;
 }
 
-// glms—ñ‚Ì‰Šú‰»
+// glmè¡Œåˆ—ã®åˆæœŸåŒ–
 void OpenGLRenderer::initializeMatrices() {
-    // ƒ‚ƒfƒ‹s—ñi’PˆÊs—ñ‚©‚çŠJnj
+    // ãƒ¢ãƒ‡ãƒ«è¡Œåˆ—ï¼ˆå˜ä½è¡Œåˆ—ã‹ã‚‰é–‹å§‹ï¼‰
     m_modelMatrix = glm::mat4(1.0f);
 
-    // ƒrƒ…[s—ñiƒJƒƒ‰‚ğ­‚µãŒã‚ë‚É‰º‚°‚éj
+    // ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ï¼ˆã‚«ãƒ¡ãƒ©ã‚’å°‘ã—ä¸Šå¾Œã‚ã«ä¸‹ã’ã‚‹ï¼‰
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
     m_viewMatrix = glm::lookAt(cameraPos, cameraTarget, cameraUp);
 
-    // “Š‰es—ñi“§‹“Š‰ej
+    // æŠ•å½±è¡Œåˆ—ï¼ˆé€è¦–æŠ•å½±ï¼‰
     float aspectRatio = (float)m_windowWidth / (float)m_windowHeight;
     m_projectionMatrix = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 
-    std::cout << "  glms—ñ‚ª‰Šú‰»‚³‚ê‚Ü‚µ‚½:" << std::endl;
-    std::cout << "  ƒJƒƒ‰ˆÊ’u: (" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ")" << std::endl;
-    std::cout << "  ƒAƒXƒyƒNƒg”ä: " << aspectRatio << std::endl;
-    std::cout << "  ‹–ìŠp: 45“x" << std::endl;
+    std::cout << "  glmè¡Œåˆ—ãŒåˆæœŸåŒ–ã•ã‚Œã¾ã—ãŸ:" << std::endl;
+    std::cout << "  ã‚«ãƒ¡ãƒ©ä½ç½®: (" << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << ")" << std::endl;
+    std::cout << "  ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”: " << aspectRatio << std::endl;
+    std::cout << "  è¦–é‡è§’: 45åº¦" << std::endl;
 }
 
-// s—ñXVƒƒ\ƒbƒh‚ÌXV”ÅiƒJƒƒ‰‘Î‰j
+// è¡Œåˆ—æ›´æ–°ãƒ¡ã‚½ãƒƒãƒ‰ã®æ›´æ–°ç‰ˆï¼ˆã‚«ãƒ¡ãƒ©å¯¾å¿œï¼‰
 void OpenGLRenderer::updateMatrices() {
-    //// ƒ‚ƒfƒ‹s—ñ‚ÌXViƒAƒjƒ[ƒVƒ‡ƒ“—p‰ñ“]j
-    //m_rotationAngle += 0.01f;  // ‰ñ“]‘¬“x
+    //// ãƒ¢ãƒ‡ãƒ«è¡Œåˆ—ã®æ›´æ–°ï¼ˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨å›è»¢ï¼‰
+    //m_rotationAngle += 0.01f;  // å›è»¢é€Ÿåº¦
     //if (m_rotationAngle > 2.0f * 3.14159f) {
     //    m_rotationAngle -= 2.0f * 3.14159f;
     //}
 
-    //// glm::rotate()‚ğg—p‚µ‚Äƒ‚ƒfƒ‹s—ñ‚ğXV
+    //// glm::rotate()ã‚’ä½¿ç”¨ã—ã¦ãƒ¢ãƒ‡ãƒ«è¡Œåˆ—ã‚’æ›´æ–°
     //m_modelMatrix = glm::mat4(1.0f);
     //m_modelMatrix = glm::rotate(m_modelMatrix, m_rotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    // ƒJƒƒ‰‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡Aƒrƒ…[‚Æ“Š‰es—ñ‚ğXV
+    // ã‚«ãƒ¡ãƒ©ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€ãƒ“ãƒ¥ãƒ¼ã¨æŠ•å½±è¡Œåˆ—ã‚’æ›´æ–°
     if (m_camera) {
         m_viewMatrix = m_camera->getViewMatrix();
         m_projectionMatrix = m_camera->getProjectionMatrix();
     } else {
-        // ƒfƒtƒHƒ‹ƒg‚ÌƒJƒƒ‰İ’èiŒã•ûŒİŠ·«‚Ì‚½‚ßj
+        // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚«ãƒ¡ãƒ©è¨­å®šï¼ˆå¾Œæ–¹äº’æ›æ€§ã®ãŸã‚ï¼‰
         m_viewMatrix = glm::lookAt(
-            glm::vec3(0.0f, 0.0f, 3.0f),  // ƒJƒƒ‰ˆÊ’u
-            glm::vec3(0.0f, 0.0f, 0.0f),  // ’‹“_
-            glm::vec3(0.0f, 1.0f, 0.0f)   // ƒAƒbƒvƒxƒNƒgƒ‹
+            glm::vec3(0.0f, 0.0f, 3.0f),  // ã‚«ãƒ¡ãƒ©ä½ç½®
+            glm::vec3(0.0f, 0.0f, 0.0f),  // æ³¨è¦–ç‚¹
+            glm::vec3(0.0f, 1.0f, 0.0f)   // ã‚¢ãƒƒãƒ—ãƒ™ã‚¯ãƒˆãƒ«
         );
         m_projectionMatrix = glm::perspective(
             glm::radians(45.0f),
@@ -168,7 +168,7 @@ void OpenGLRenderer::updateMatrices() {
         );
     }
 
-    // ƒVƒF[ƒ_[‚És—ñ‚ğ‘—M
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã«è¡Œåˆ—ã‚’é€ä¿¡
     //m_shaderManager.setMVPMatrices(m_modelMatrix, m_viewMatrix, m_projectionMatrix);
 }
 
@@ -177,53 +177,53 @@ bool OpenGLRenderer::initialize() {
         return false;
     }
 
-    // ƒVƒF[ƒ_[‚ğƒRƒ“ƒpƒCƒ‹EƒŠƒ“ƒN
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãƒ»ãƒªãƒ³ã‚¯
     if (!m_shaderManager.createShader(
         ShaderManager::getColoredVertexShader(),
         ShaderManager::getColoredFragmentShader())) {
-        std::cerr << "ƒVƒF[ƒ_[‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    // ƒeƒXƒgŠÖ”‚ğÀs
+    // ãƒ†ã‚¹ãƒˆé–¢æ•°ã‚’å®Ÿè¡Œ
     //testShaderCompilation();
     //testGLMIntegration();
 
     setupTriangle();
     initializeMatrices();
 
-    // ƒfƒ‚ƒ‚[ƒh‚ÅŠJn
+    // ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã§é–‹å§‹
     setDemoMode(true);
 
-    std::cout << "OpenGLƒŒƒ“ƒ_ƒ‰[‚ª³í‚É‰Šú‰»‚³‚ê‚Ü‚µ‚½" << std::endl;
+    std::cout << "OpenGLãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ãŒæ­£å¸¸ã«åˆæœŸåŒ–ã•ã‚Œã¾ã—ãŸ" << std::endl;
     return true;
 }
 
-// ƒfƒ‚ƒ‚[ƒh‚Ì•`‰æ
+// ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã®æç”»
 void OpenGLRenderer::renderDemo() {
-    // ƒfƒ‚—p‚ÌOŠpŒ`‚ğ•`‰æ
+    // ãƒ‡ãƒ¢ç”¨ã®ä¸‰è§’å½¢ã‚’æç”»
     glBindVertexArray(m_demoVAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
 }
 
-// glTFƒ‚[ƒh‚Ì•`‰æ
+// glTFãƒ¢ãƒ¼ãƒ‰ã®æç”»
 void OpenGLRenderer::renderGLTF() {
     if (!m_currentModel || m_meshData.empty()) {
         return;
     }
 
-    // ƒƒCƒ„[ƒtƒŒ[ƒ€•\¦‚ÌØ‚è‘Ö‚¦iƒIƒvƒVƒ‡ƒ“j
-    // ƒfƒoƒbƒO—p‚ÉƒƒCƒ„[ƒtƒŒ[ƒ€ƒ‚[ƒh‚ğ—LŒø‚É‚·‚éê‡
+    // ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ è¡¨ç¤ºã®åˆ‡ã‚Šæ›¿ãˆï¼ˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰
+    // ãƒ‡ãƒãƒƒã‚°ç”¨ã«ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’æœ‰åŠ¹ã«ã™ã‚‹å ´åˆ
 
     if (m_isWireframeMode) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glLineWidth(1.0f); // ƒƒCƒ„[ƒtƒŒ[ƒ€‚Ìü•
+        glLineWidth(1.0f); // ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ã®ç·šå¹…
     } else {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    // ŠeƒƒbƒVƒ…‚ğ•`‰æ
+    // å„ãƒ¡ãƒƒã‚·ãƒ¥ã‚’æç”»
     for (const auto& mesh : m_meshData) {
         glBindVertexArray(mesh->VAO);
 
@@ -236,13 +236,13 @@ void OpenGLRenderer::renderGLTF() {
         glBindVertexArray(0);
     }
 
-    // ƒƒCƒ„[ƒtƒŒ[ƒ€ƒ‚[ƒh‚ğŒ³‚É–ß‚·
+    // ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã‚’å…ƒã«æˆ»ã™
     if (m_isWireframeMode) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }
 
-// glTFƒŠƒ\[ƒX‚ÌƒNƒŠ[ƒ“ƒAƒbƒv
+// glTFãƒªã‚½ãƒ¼ã‚¹ã®ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
 void OpenGLRenderer::cleanupGLTFResources() {
     for (auto& mesh : m_meshData) {
         if (mesh->EBO != 0) {
@@ -260,27 +260,27 @@ void OpenGLRenderer::cleanupGLTFResources() {
     m_currentModel = nullptr;
 }
 
-// render()ƒƒ\ƒbƒh‚ÌXV”Å
+// render()ãƒ¡ã‚½ãƒƒãƒ‰ã®æ›´æ–°ç‰ˆ
 void OpenGLRenderer::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // s—ñ‚ğXV
+    // è¡Œåˆ—ã‚’æ›´æ–°
     updateMatrices();
 
-    // ƒVƒF[ƒ_[‚ğg—p
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ä½¿ç”¨
     m_shaderManager.use();
 
-    // glm‚©‚çOpenGLƒVƒF[ƒ_[‚ÖMVPs—ñ‚ğ“]‘—
+    // glmã‹ã‚‰OpenGLã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸MVPè¡Œåˆ—ã‚’è»¢é€
     m_shaderManager.setMVPMatrices(m_modelMatrix, m_viewMatrix, m_projectionMatrix);
 
-    // ƒ‚[ƒh‚É‰‚¶‚Ä•`‰æ
+    // ãƒ¢ãƒ¼ãƒ‰ã«å¿œã˜ã¦æç”»
     if (m_isDemo) {
         renderDemo();
     } else {
         renderGLTF();
     }
 
-    // ƒoƒbƒNƒoƒbƒtƒ@[‚ğƒtƒƒ“ƒgƒoƒbƒtƒ@[‚É•\¦
+    // ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚’ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ¼ã«è¡¨ç¤º
     SwapBuffers(m_hDC);
 }
 
@@ -288,22 +288,22 @@ void OpenGLRenderer::onResize(int width, int height) {
     m_windowWidth = width;
     m_windowHeight = height;
 
-    // ƒrƒ…[ƒ|[ƒg‚ğXV
+    // ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚’æ›´æ–°
     glViewport(0, 0, width, height);
 
-    // “Š‰es—ñ‚ğÄŒvZiƒAƒXƒyƒNƒg”ä‚ª•ÏX‚³‚ê‚½ê‡j
+    // æŠ•å½±è¡Œåˆ—ã‚’å†è¨ˆç®—ï¼ˆã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆï¼‰
     float aspectRatio = (float)width / (float)height;
     m_projectionMatrix = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 
-    std::cout << "ƒEƒBƒ“ƒhƒEƒTƒCƒY•ÏX: " << width << "x" << height 
-        << " (ƒAƒXƒyƒNƒg”ä: " << aspectRatio << ")" << std::endl;
+    std::cout << "ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¤‰æ›´: " << width << "x" << height 
+        << " (ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”: " << aspectRatio << ")" << std::endl;
 }
 
 void OpenGLRenderer::cleanup() {
-    // glTFƒŠƒ\[ƒX‚ğƒNƒŠ[ƒ“ƒAƒbƒv
+    // glTFãƒªã‚½ãƒ¼ã‚¹ã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
     cleanupGLTFResources();
 
-    // ƒfƒ‚—p‚ÌVBO/VAO‚ğƒNƒŠ[ƒ“ƒAƒbƒv
+    // ãƒ‡ãƒ¢ç”¨ã®VBO/VAOã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
     if (m_demoVBO != 0) {
         glDeleteBuffers(1, &m_demoVBO);
         m_demoVBO = 0;
@@ -314,10 +314,10 @@ void OpenGLRenderer::cleanup() {
         m_demoVAO = 0;
     }
 
-    // ƒVƒF[ƒ_[‚ğƒNƒŠ[ƒ“ƒAƒbƒv
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
     m_shaderManager.cleanup();
 
-    // OpenGLƒRƒ“ƒeƒLƒXƒg‚ğƒNƒŠ[ƒ“ƒAƒbƒv
+    // OpenGLã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
     if (m_hRC) {
         wglMakeCurrent(nullptr, nullptr);
         wglDeleteContext(m_hRC);
@@ -329,43 +329,43 @@ void OpenGLRenderer::cleanup() {
         m_hDC = nullptr;
     }
 
-    std::cout << "OpenGLƒŒƒ“ƒ_ƒ‰[‚ÌƒNƒŠ[ƒ“ƒAƒbƒv‚ªŠ®—¹‚µ‚Ü‚µ‚½" << std::endl;
+    std::cout << "OpenGLãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã®ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—ãŒå®Œäº†ã—ã¾ã—ãŸ" << std::endl;
 }
 
-// glTFƒ‚ƒfƒ‹‚Ìƒ[ƒh
+// glTFãƒ¢ãƒ‡ãƒ«ã®ãƒ­ãƒ¼ãƒ‰
 bool OpenGLRenderer::loadGLTFModel(const tinygltf::Model& model) {
-    std::cout << "=== glTFƒ‚ƒfƒ‹ƒ[ƒhŠJn ===" << std::endl;
+    std::cout << "=== glTFãƒ¢ãƒ‡ãƒ«ãƒ­ãƒ¼ãƒ‰é–‹å§‹ ===" << std::endl;
 
-    // Šù‘¶‚ÌglTFƒŠƒ\[ƒX‚ğƒNƒŠ[ƒ“ƒAƒbƒv
+    // æ—¢å­˜ã®glTFãƒªã‚½ãƒ¼ã‚¹ã‚’ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
     cleanupGLTFResources();
 
-    // ƒ‚ƒfƒ‹‚ÌQÆ‚ğ•Û‘¶
+    // ãƒ¢ãƒ‡ãƒ«ã®å‚ç…§ã‚’ä¿å­˜
     m_currentModel = &model;
 
-    // glTFƒ‚ƒfƒ‹‚ğˆ—
+    // glTFãƒ¢ãƒ‡ãƒ«ã‚’å‡¦ç†
     if (!processGLTFModel(model)) {
-        std::cerr << "ƒGƒ‰[: glTFƒ‚ƒfƒ‹‚Ìˆ—‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: glTFãƒ¢ãƒ‡ãƒ«ã®å‡¦ç†ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ‚[ƒh‚ğglTF‚Éİ’è
+    // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ã‚’glTFã«è¨­å®š
     setDemoMode(false);
 
-    std::cout << "? glTFƒ‚ƒfƒ‹ƒ[ƒhŠ®—¹ (ƒƒbƒVƒ…”: " << m_meshData.size() << ")" << std::endl;
+    std::cout << "? glTFãƒ¢ãƒ‡ãƒ«ãƒ­ãƒ¼ãƒ‰å®Œäº† (ãƒ¡ãƒƒã‚·ãƒ¥æ•°: " << m_meshData.size() << ")" << std::endl;
     return true;
 }
 
-// glTFƒ‚ƒfƒ‹‘S‘Ì‚Ìˆ—
+// glTFãƒ¢ãƒ‡ãƒ«å…¨ä½“ã®å‡¦ç†
 bool OpenGLRenderer::processGLTFModel(const tinygltf::Model& model) {
-    std::cout << "glTFƒ‚ƒfƒ‹ˆ—’†..." << std::endl;
-    std::cout << "  ƒƒbƒVƒ…”: " << model.meshes.size() << std::endl;
-    std::cout << "  ƒm[ƒh”: " << model.nodes.size() << std::endl;
-    std::cout << "  ƒV[ƒ“”: " << model.scenes.size() << std::endl;
+    std::cout << "glTFãƒ¢ãƒ‡ãƒ«å‡¦ç†ä¸­..." << std::endl;
+    std::cout << "  ãƒ¡ãƒƒã‚·ãƒ¥æ•°: " << model.meshes.size() << std::endl;
+    std::cout << "  ãƒãƒ¼ãƒ‰æ•°: " << model.nodes.size() << std::endl;
+    std::cout << "  ã‚·ãƒ¼ãƒ³æ•°: " << model.scenes.size() << std::endl;
 
-    // ŠeƒƒbƒVƒ…‚ğˆ—
+    // å„ãƒ¡ãƒƒã‚·ãƒ¥ã‚’å‡¦ç†
     for (size_t i = 0; i < model.meshes.size(); ++i) {
         if (!processMesh(model.meshes[i], model)) {
-            std::cerr << "ƒGƒ‰[: ƒƒbƒVƒ… " << i << " ‚Ìˆ—‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+            std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ¡ãƒƒã‚·ãƒ¥ " << i << " ã®å‡¦ç†ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
             return false;
         }
     }
@@ -373,16 +373,16 @@ bool OpenGLRenderer::processGLTFModel(const tinygltf::Model& model) {
     return true;
 }
 
-// ƒƒbƒVƒ…‚Ìˆ—
+// ãƒ¡ãƒƒã‚·ãƒ¥ã®å‡¦ç†
 bool OpenGLRenderer::processMesh(const tinygltf::Mesh& mesh, const tinygltf::Model& model) {
-    std::cout << "  ƒƒbƒVƒ…ˆ—’†: " << mesh.name << " (ƒvƒŠƒ~ƒeƒBƒu”: " << mesh.primitives.size() << ")" << std::endl;
+    std::cout << "  ãƒ¡ãƒƒã‚·ãƒ¥å‡¦ç†ä¸­: " << mesh.name << " (ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æ•°: " << mesh.primitives.size() << ")" << std::endl;
 
-    // ŠeƒvƒŠƒ~ƒeƒBƒu‚ğˆ—
+    // å„ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã‚’å‡¦ç†
     for (size_t i = 0; i < mesh.primitives.size(); ++i) {
         auto meshData = std::make_unique<GLTFMeshData>();
 
         if (!processPrimitive(mesh.primitives[i], model, *meshData)) {
-            std::cerr << "ƒGƒ‰[: ƒvƒŠƒ~ƒeƒBƒu " << i << " ‚Ìˆ—‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+            std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ– " << i << " ã®å‡¦ç†ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
             return false;
         }
 
@@ -392,12 +392,12 @@ bool OpenGLRenderer::processMesh(const tinygltf::Mesh& mesh, const tinygltf::Mod
     return true;
 }
 
-// ƒvƒŠƒ~ƒeƒBƒu‚Ìˆ—
+// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ã®å‡¦ç†
 bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, const tinygltf::Model& model, GLTFMeshData& meshData) {
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
-    // •`‰æƒ‚[ƒh‚Ìİ’è
+    // æç”»ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
     meshData.mode = GL_TRIANGLES;
     if (primitive.mode == TINYGLTF_MODE_TRIANGLES) {
         meshData.mode = GL_TRIANGLES;
@@ -407,56 +407,56 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
         meshData.mode = GL_TRIANGLE_FAN;
     }
 
-    // ˆÊ’uƒf[ƒ^‚Ìæ“¾
+    // ä½ç½®ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
     auto positionIt = primitive.attributes.find("POSITION");
     if (positionIt == primitive.attributes.end()) {
-        std::cerr << "ƒGƒ‰[: POSITION‘®«‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: POSITIONå±æ€§ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“" << std::endl;
         return false;
     }
 
     if (!getAccessorData(model, positionIt->second, vertices)) {
-        std::cerr << "ƒGƒ‰[: ˆÊ’uƒf[ƒ^‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ä½ç½®ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
     meshData.vertexCount = static_cast<GLsizei>(vertices.size() / 3);
 
-    // ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ìæ“¾iƒIƒvƒVƒ‡ƒ“j
+    // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ï¼ˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼‰
     if (primitive.indices >= 0) {
         if (!getIndexData(model, primitive.indices, indices)) {
-            std::cerr << "ƒGƒ‰[: ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+            std::cerr << "ã‚¨ãƒ©ãƒ¼: ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
             return false;
         }
         meshData.hasIndices = true;
         meshData.indexCount = static_cast<GLsizei>(indices.size());
     }
 
-    // ƒ}ƒeƒŠƒAƒ‹ƒf[ƒ^‚Ìæ“¾iæ‚¸‚Íƒx[ƒXƒJƒ‰[‚Ì‚İj
+    // ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ï¼ˆå…ˆãšã¯ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ã®ã¿ï¼‰
     auto material = model.materials.at(primitive.material);
     auto pbr = material.pbrMetallicRoughness;
     auto color = pbr.baseColorFactor;
     glm::vec3 materialColor(color[0], color[1], color[2]);
     /*m_shaderManager.setUniform("u_materialColor", materialColor);*/
 
-    // VAO‚Ìì¬
+    // VAOã®ä½œæˆ
     if (!createVAO(vertices, indices, meshData)) {
-        std::cerr << "ƒGƒ‰[: VAO‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: VAOã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
         return false;
     }
 
-    std::cout << "    ƒvƒŠƒ~ƒeƒBƒuˆ—Š®—¹ (’¸“_”: " << meshData.vertexCount;
+    std::cout << "    ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å‡¦ç†å®Œäº† (é ‚ç‚¹æ•°: " << meshData.vertexCount;
     if (meshData.hasIndices) {
-        std::cout << ", ƒCƒ“ƒfƒbƒNƒX”: " << meshData.indexCount;
+        std::cout << ", ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°: " << meshData.indexCount;
     }
     std::cout << ")" << std::endl;
 
     return true;
 }
 
-// ƒAƒNƒZƒT[‚©‚çƒf[ƒ^‚ğæ“¾
+// ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 bool OpenGLRenderer::getAccessorData(const tinygltf::Model& model, int accessorIndex, std::vector<float>& data) {
     if (accessorIndex < 0 || accessorIndex >= static_cast<int>(model.accessors.size())) {
-        std::cerr << "ƒGƒ‰[: –³Œø‚ÈƒAƒNƒZƒT[ƒCƒ“ƒfƒbƒNƒX: " << accessorIndex << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ç„¡åŠ¹ãªã‚¢ã‚¯ã‚»ã‚µãƒ¼ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹: " << accessorIndex << std::endl;
         return false;
     }
 
@@ -464,9 +464,9 @@ bool OpenGLRenderer::getAccessorData(const tinygltf::Model& model, int accessorI
     const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView];
     const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
 
-    // Œ»İ‚ÍˆÊ’uƒf[ƒ^iPOSITIONj‚Ì‚İ‘Î‰i3—v‘f‚Ìfloatj
+    // ç¾åœ¨ã¯ä½ç½®ãƒ‡ãƒ¼ã‚¿ï¼ˆPOSITIONï¼‰ã®ã¿å¯¾å¿œï¼ˆ3è¦ç´ ã®floatï¼‰
     if (accessor.type != TINYGLTF_TYPE_VEC3 || accessor.componentType != TINYGLTF_COMPONENT_TYPE_FLOAT) {
-        std::cerr << "ƒGƒ‰[: –¢‘Î‰‚ÌƒAƒNƒZƒT[ƒ^ƒCƒv" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: æœªå¯¾å¿œã®ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã‚¿ã‚¤ãƒ—" << std::endl;
         return false;
     }
 
@@ -482,10 +482,10 @@ bool OpenGLRenderer::getAccessorData(const tinygltf::Model& model, int accessorI
     return true;
 }
 
-// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ìæ“¾
+// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
 bool OpenGLRenderer::getIndexData(const tinygltf::Model& model, int accessorIndex, std::vector<unsigned int>& indices) {
     if (accessorIndex < 0 || accessorIndex >= static_cast<int>(model.accessors.size())) {
-        std::cerr << "ƒGƒ‰[: –³Œø‚ÈƒAƒNƒZƒT[ƒCƒ“ƒfƒbƒNƒX: " << accessorIndex << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ç„¡åŠ¹ãªã‚¢ã‚¯ã‚»ã‚µãƒ¼ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹: " << accessorIndex << std::endl;
         return false;
     }
 
@@ -497,7 +497,7 @@ bool OpenGLRenderer::getIndexData(const tinygltf::Model& model, int accessorInde
 
     const unsigned char* src = buffer.data.data() + bufferView.byteOffset + accessor.byteOffset;
 
-    // ƒRƒ“ƒ|[ƒlƒ“ƒgƒ^ƒCƒv‚É‰‚¶‚ÄƒCƒ“ƒfƒbƒNƒX‚ğ“Ç‚İæ‚è
+    // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚¿ã‚¤ãƒ—ã«å¿œã˜ã¦ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’èª­ã¿å–ã‚Š
     if (accessor.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT) {
         const unsigned short* shortData = reinterpret_cast<const unsigned short*>(src);
         for (size_t i = 0; i < accessor.count; ++i) {
@@ -514,20 +514,20 @@ bool OpenGLRenderer::getIndexData(const tinygltf::Model& model, int accessorInde
             indices[i] = static_cast<unsigned int>(byteData[i]);
         }
     } else {
-        std::cerr << "ƒGƒ‰[: –¢‘Î‰‚ÌƒCƒ“ƒfƒbƒNƒXƒRƒ“ƒ|[ƒlƒ“ƒgƒ^ƒCƒv" << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: æœªå¯¾å¿œã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚¿ã‚¤ãƒ—" << std::endl;
         return false;
     }
 
     return true;
 }
 
-// VAO‚Ìì¬
+// VAOã®ä½œæˆ
 bool OpenGLRenderer::createVAO(
     const std::vector<float>& vertices, 
     const std::vector<unsigned int>& indices, 
     GLTFMeshData& meshData) 
 {
-    // VAO‚ÆVBO‚ğ¶¬
+    // VAOã¨VBOã‚’ç”Ÿæˆ
     glGenVertexArrays(1, &meshData.VAO);
     glGenBuffers(1, &meshData.VBO);
 
@@ -537,15 +537,15 @@ bool OpenGLRenderer::createVAO(
 
     glBindVertexArray(meshData.VAO);
 
-    // ’¸“_ƒoƒbƒtƒ@[‚Ìİ’è
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®è¨­å®š
     glBindBuffer(GL_ARRAY_BUFFER, meshData.VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
-    // ˆÊ’u‘®«‚Ìİ’è (location = 0)
+    // ä½ç½®å±æ€§ã®è¨­å®š (location = 0)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@[‚Ìİ’èi‘¶İ‚·‚éê‡j
+    // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ¼ã®è¨­å®šï¼ˆå­˜åœ¨ã™ã‚‹å ´åˆï¼‰
     if (meshData.hasIndices) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
@@ -553,41 +553,41 @@ bool OpenGLRenderer::createVAO(
 
     glBindVertexArray(0);
 
-    // OpenGLƒGƒ‰[ƒ`ƒFƒbƒN
+    // OpenGLã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
-        std::cerr << "ƒGƒ‰[: VAOì¬’†‚ÉOpenGLƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½: " << error << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: VAOä½œæˆä¸­ã«OpenGLã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ: " << error << std::endl;
         return false;
     }
 
     return true;
 }
 
-// ƒtƒF[ƒY5.2: ƒJƒƒ‰XVƒƒ\ƒbƒh‚ÌÀ‘•
+// ãƒ•ã‚§ãƒ¼ã‚º5.2: ã‚«ãƒ¡ãƒ©æ›´æ–°ãƒ¡ã‚½ãƒƒãƒ‰ã®å®Ÿè£…
 void OpenGLRenderer::updateCamera(const Camera* camera) {
     if (!camera) {
-        std::cerr << "Œx: ƒJƒƒ‰‚ªnullptr‚Å‚·" << std::endl;
+        std::cerr << "è­¦å‘Š: ã‚«ãƒ¡ãƒ©ãŒnullptrã§ã™" << std::endl;
         return;
     }
 
-    // ƒJƒƒ‰‚ÌQÆ‚ğ•Û‘¶
+    // ã‚«ãƒ¡ãƒ©ã®å‚ç…§ã‚’ä¿å­˜
     m_camera = camera;
 
-    // ƒJƒƒ‰‚©‚çƒrƒ…[s—ñ‚Æ“Š‰es—ñ‚ğæ“¾
+    // ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã¨æŠ•å½±è¡Œåˆ—ã‚’å–å¾—
     m_viewMatrix = camera->getViewMatrix();
     m_projectionMatrix = camera->getProjectionMatrix();
 
-    // ƒfƒoƒbƒOo—Íiglms—ñ‚ÌŠm”Fj
+    // ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›ï¼ˆglmè¡Œåˆ—ã®ç¢ºèªï¼‰
 #ifdef _DEBUG
-    std::cout << "ƒJƒƒ‰s—ñ‚ğXV‚µ‚Ü‚µ‚½:" << std::endl;
-    std::cout << "ƒrƒ…[s—ñ:" << std::endl;
+    std::cout << "ã‚«ãƒ¡ãƒ©è¡Œåˆ—ã‚’æ›´æ–°ã—ã¾ã—ãŸ:" << std::endl;
+    std::cout << "ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—:" << std::endl;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             std::cout << m_viewMatrix[i][j] << " ";
         }
         std::cout << std::endl;
     }
-    std::cout << "“Š‰es—ñ:" << std::endl;
+    std::cout << "æŠ•å½±è¡Œåˆ—:" << std::endl;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             std::cout << m_projectionMatrix[i][j] << " ";
@@ -596,82 +596,82 @@ void OpenGLRenderer::updateCamera(const Camera* camera) {
     }
 #endif
 
-    // ƒVƒF[ƒ_[‚És—ñ‚ğ‘—MiŒ»İ‚ÌƒVƒF[ƒ_[ƒvƒƒOƒ‰ƒ€‚ªƒoƒCƒ“ƒh‚³‚ê‚Ä‚¢‚é‘O’ñj
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã«è¡Œåˆ—ã‚’é€ä¿¡ï¼ˆç¾åœ¨ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒãƒã‚¤ãƒ³ãƒ‰ã•ã‚Œã¦ã„ã‚‹å‰æï¼‰
     //m_shaderManager.setMVPMatrices(m_modelMatrix, m_viewMatrix, m_projectionMatrix);
 }
 
-//// ƒVƒF[ƒ_[ƒRƒ“ƒpƒCƒŒ[ƒVƒ‡ƒ“‚ÌƒeƒXƒg
+//// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚³ãƒ³ãƒ‘ã‚¤ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒ†ã‚¹ãƒˆ
 //void OpenGLRenderer::testShaderCompilation() {
-//    std::cout << "=== ƒVƒF[ƒ_[ƒRƒ“ƒpƒCƒŒ[ƒVƒ‡ƒ“ƒeƒXƒg ===" << std::endl;
+//    std::cout << "=== ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚³ãƒ³ãƒ‘ã‚¤ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ†ã‚¹ãƒˆ ===" << std::endl;
 //
 //    if (m_shaderManager.isValid()) {
-//        std::cout << "O ƒVƒF[ƒ_[‚ÌƒRƒ“ƒpƒCƒ‹‚ÆƒŠƒ“ƒN‚ª¬Œ÷‚µ‚Ü‚µ‚½" << std::endl;
-//        std::cout << "  ƒvƒƒOƒ‰ƒ€ID: " << m_shaderManager.getProgramID() << std::endl;
+//        std::cout << "O ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã¨ãƒªãƒ³ã‚¯ãŒæˆåŠŸã—ã¾ã—ãŸ" << std::endl;
+//        std::cout << "  ãƒ—ãƒ­ã‚°ãƒ©ãƒ ID: " << m_shaderManager.getProgramID() << std::endl;
 //
-//        // ƒVƒF[ƒ_[‚ÌÚ×î•ñ‚ğ•\¦
+//        // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®è©³ç´°æƒ…å ±ã‚’è¡¨ç¤º
 //        m_shaderManager.printActiveUniforms();
 //        m_shaderManager.printActiveAttributes();
 //    } else {
-//        std::cerr << "X ƒVƒF[ƒ_[‚ÌƒRƒ“ƒpƒCƒ‹/ƒŠƒ“ƒN‚É¸”s‚µ‚Ü‚µ‚½" << std::endl;
+//        std::cerr << "X ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«/ãƒªãƒ³ã‚¯ã«å¤±æ•—ã—ã¾ã—ãŸ" << std::endl;
 //    }
 //}
 //
-//// glm“‡‚ÌƒeƒXƒg
+//// glmçµ±åˆã®ãƒ†ã‚¹ãƒˆ
 //void OpenGLRenderer::testGLMIntegration() {
-//    std::cout << "=== glm“‡ƒeƒXƒg ===" << std::endl;
+//    std::cout << "=== glmçµ±åˆãƒ†ã‚¹ãƒˆ ===" << std::endl;
 //
-//    // Šî–{“I‚ÈglmƒxƒNƒgƒ‹‘€ì‚ÌƒeƒXƒg
+//    // åŸºæœ¬çš„ãªglmãƒ™ã‚¯ãƒˆãƒ«æ“ä½œã®ãƒ†ã‚¹ãƒˆ
 //    glm::vec3 testVec1(1.0f, 2.0f, 3.0f);
 //    glm::vec3 testVec2(4.0f, 5.0f, 6.0f);
 //    glm::vec3 testVecSum = testVec1 + testVec2;
 //
-//    std::cout << "O glm::vec3‰‰ZƒeƒXƒg: " 
+//    std::cout << "O glm::vec3æ¼”ç®—ãƒ†ã‚¹ãƒˆ: " 
 //        << "(" << testVec1.x << "," << testVec1.y << "," << testVec1.z << ") + "
 //        << "(" << testVec2.x << "," << testVec2.y << "," << testVec2.z << ") = "
 //        << "(" << testVecSum.x << "," << testVecSum.y << "," << testVecSum.z << ")" << std::endl;
 //
-//    // Šî–{“I‚Èglms—ñ‘€ì‚ÌƒeƒXƒg
+//    // åŸºæœ¬çš„ãªglmè¡Œåˆ—æ“ä½œã®ãƒ†ã‚¹ãƒˆ
 //    glm::mat4 testMatrix = glm::mat4(1.0f);
 //    testMatrix = glm::translate(testMatrix, glm::vec3(1.0f, 2.0f, 3.0f));
 //    testMatrix = glm::rotate(testMatrix, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 //    testMatrix = glm::scale(testMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 //
-//    std::cout << "O glm::mat4•ÏŠ·ƒeƒXƒg: •½sˆÚ“® ¨ ‰ñ“] ¨ ƒXƒP[ƒ‹" << std::endl;
+//    std::cout << "O glm::mat4å¤‰æ›ãƒ†ã‚¹ãƒˆ: å¹³è¡Œç§»å‹• â†’ å›è»¢ â†’ ã‚¹ã‚±ãƒ¼ãƒ«" << std::endl;
 //
-//    // glm”ŠwŠÖ”‚ÌƒeƒXƒg
+//    // glmæ•°å­¦é–¢æ•°ã®ãƒ†ã‚¹ãƒˆ
 //    float testAngle = glm::radians(90.0f);
 //    float testSin = glm::sin(testAngle);
 //    float testCos = glm::cos(testAngle);
 //
-//    std::cout << "O glm”ŠwŠÖ”ƒeƒXƒg: sin(90‹) = " << testSin 
-//        << ", cos(90‹) = " << testCos << std::endl;
+//    std::cout << "O glmæ•°å­¦é–¢æ•°ãƒ†ã‚¹ãƒˆ: sin(90Â°) = " << testSin 
+//        << ", cos(90Â°) = " << testCos << std::endl;
 //
-//    // ƒxƒNƒgƒ‹’·‚³‚ÆƒhƒbƒgÏ‚ÌƒeƒXƒg
+//    // ãƒ™ã‚¯ãƒˆãƒ«é•·ã•ã¨ãƒ‰ãƒƒãƒˆç©ã®ãƒ†ã‚¹ãƒˆ
 //    float vecLength = glm::length(testVec1);
 //    float dotProduct = glm::dot(testVec1, testVec2);
 //
-//    std::cout << "O glmƒxƒNƒgƒ‹‰‰ZƒeƒXƒg: length = " << vecLength 
+//    std::cout << "O glmãƒ™ã‚¯ãƒˆãƒ«æ¼”ç®—ãƒ†ã‚¹ãƒˆ: length = " << vecLength 
 //        << ", dot product = " << dotProduct << std::endl;
 //
-//    // ³‹K‰»ƒeƒXƒg
+//    // æ­£è¦åŒ–ãƒ†ã‚¹ãƒˆ
 //    glm::vec3 normalizedVec = glm::normalize(testVec1);
-//    std::cout << "O glm³‹K‰»ƒeƒXƒg: (" << testVec1.x << "," << testVec1.y << "," << testVec1.z << ") ¨ "
+//    std::cout << "O glmæ­£è¦åŒ–ãƒ†ã‚¹ãƒˆ: (" << testVec1.x << "," << testVec1.y << "," << testVec1.z << ") â†’ "
 //        << "(" << normalizedVec.x << "," << normalizedVec.y << "," << normalizedVec.z << ")" << std::endl;
 //
-//    // MVPs—ñ‚ÌŒvZƒeƒXƒg
+//    // MVPè¡Œåˆ—ã®è¨ˆç®—ãƒ†ã‚¹ãƒˆ
 //    glm::mat4 model = glm::mat4(1.0f);
 //    glm::mat4 view = glm::lookAt(glm::vec3(0,0,3), glm::vec3(0,0,0), glm::vec3(0,1,0));
 //    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
 //    glm::mat4 mvp = projection * view * model;
 //
-//    std::cout << "O MVPs—ñŒvZƒeƒXƒg: s—ñ‚ÌæZ‚ª³í‚ÉÀs‚³‚ê‚Ü‚µ‚½" << std::endl;
+//    std::cout << "O MVPè¡Œåˆ—è¨ˆç®—ãƒ†ã‚¹ãƒˆ: è¡Œåˆ—ã®ä¹—ç®—ãŒæ­£å¸¸ã«å®Ÿè¡Œã•ã‚Œã¾ã—ãŸ" << std::endl;
 //
-//    // glm::value_ptr()‚ÌƒeƒXƒgiOpenGL“]‘——pj
+//    // glm::value_ptr()ã®ãƒ†ã‚¹ãƒˆï¼ˆOpenGLè»¢é€ç”¨ï¼‰
 //    const float* matrixPtr = glm::value_ptr(mvp);
 //    if (matrixPtr != nullptr) {
-//        std::cout << "O glm::value_ptr()ƒeƒXƒg: OpenGL“]‘——pƒ|ƒCƒ“ƒ^‚Ìæ“¾‚É¬Œ÷" << std::endl;
+//        std::cout << "O glm::value_ptr()ãƒ†ã‚¹ãƒˆ: OpenGLè»¢é€ç”¨ãƒã‚¤ãƒ³ã‚¿ã®å–å¾—ã«æˆåŠŸ" << std::endl;
 //        std::cout << "  MVP[0][0] = " << matrixPtr[0] << ", MVP[3][3] = " << matrixPtr[15] << std::endl;
 //    }
 //
-//    std::cout << "=== glm“‡ƒeƒXƒgŠ®—¹ ===" << std::endl;
+//    std::cout << "=== glmçµ±åˆãƒ†ã‚¹ãƒˆå®Œäº† ===" << std::endl;
 //}

@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 
-// ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é‚©‚ğƒ`ƒFƒbƒN‚·‚éŠÖ”
+// ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹é–¢æ•°
 bool fileExists(const std::string& filename) {
     DWORD dwAttrib = GetFileAttributesA(filename.c_str());
     return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-// glTFƒtƒ@ƒCƒ‹Šg’£q‚ğŒŸØ‚·‚éŠÖ”
+// glTFãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã‚’æ¤œè¨¼ã™ã‚‹é–¢æ•°
 bool isValidGltfFile(const std::string& filename) {
     if (filename.length() < 5) return false;
 
@@ -16,77 +16,77 @@ bool isValidGltfFile(const std::string& filename) {
     return (extension == ".gltf" || filename.substr(filename.length() - 4) == ".glb");
 }
 
-// ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ğˆ—‚·‚éŠÖ”
+// ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ã‚’å‡¦ç†ã™ã‚‹é–¢æ•°
 std::string processCommandLineArgs(int argc, char* argv[]) {
-    std::cout << "glTFƒrƒ…[ƒA[ - OpenGLƒŒƒ“ƒ_ƒ‰[" << std::endl;
-    std::cout << "g—p•û–@: " << argv[0] << " <gltfƒtƒ@ƒCƒ‹ƒpƒX>" << std::endl;
-    std::cout << "ƒTƒ|[ƒgŒ`®: .gltf, .glb" << std::endl;
-    std::cout << "‘€ì•û–@:" << std::endl;
-    std::cout << "  ESC: I—¹" << std::endl;
-    std::cout << "  WASD: ƒJƒƒ‰ˆÚ“® (‘OŒã¶‰E)" << std::endl;
-    std::cout << "  QE: ƒJƒƒ‰ã‰ºˆÚ“®" << std::endl;
-    std::cout << "  ƒ}ƒEƒX¶ƒhƒ‰ƒbƒO: ƒJƒƒ‰‰ñ“]" << std::endl;
-    std::cout << "  ƒ}ƒEƒXƒzƒC[ƒ‹: ƒY[ƒ€ (–¢À‘•)" << std::endl;
+    std::cout << "glTFãƒ“ãƒ¥ãƒ¼ã‚¢ãƒ¼ - OpenGLãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼" << std::endl;
+    std::cout << "ä½¿ç”¨æ–¹æ³•: " << argv[0] << " <gltfãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹>" << std::endl;
+    std::cout << "ã‚µãƒãƒ¼ãƒˆå½¢å¼: .gltf, .glb" << std::endl;
+    std::cout << "æ“ä½œæ–¹æ³•:" << std::endl;
+    std::cout << "  ESC: çµ‚äº†" << std::endl;
+    std::cout << "  WASD: ã‚«ãƒ¡ãƒ©ç§»å‹• (å‰å¾Œå·¦å³)" << std::endl;
+    std::cout << "  QE: ã‚«ãƒ¡ãƒ©ä¸Šä¸‹ç§»å‹•" << std::endl;
+    std::cout << "  ãƒã‚¦ã‚¹å·¦ãƒ‰ãƒ©ãƒƒã‚°: ã‚«ãƒ¡ãƒ©å›è»¢" << std::endl;
+    std::cout << "  ãƒã‚¦ã‚¹ãƒ›ã‚¤ãƒ¼ãƒ«: ã‚ºãƒ¼ãƒ  (æœªå®Ÿè£…)" << std::endl;
     std::cout << std::endl;
 
-    // ˆø”‚Ì”‚ğƒ`ƒFƒbƒN
+    // å¼•æ•°ã®æ•°ã‚’ãƒã‚§ãƒƒã‚¯
     if (argc < 2) {
-        std::cout << "glTFƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñBOŠpŒ`‚Åƒfƒ‚ƒ‚[ƒh‚ğÀs‚µ‚Ü‚·B" << std::endl;
-        std::cout << "glTFƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş‚É‚ÍAƒtƒ@ƒCƒ‹ƒpƒX‚ğˆø”‚Æ‚µ‚Äw’è‚µ‚Ä‚­‚¾‚³‚¢B" << std::endl;
-        return ""; // ‹ó•¶š—ñ‚Íƒfƒ‚ƒ‚[ƒh‚ğ¦‚·
+        std::cout << "glTFãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚ä¸‰è§’å½¢ã§ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚" << std::endl;
+        std::cout << "glTFãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã«ã¯ã€ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’å¼•æ•°ã¨ã—ã¦æŒ‡å®šã—ã¦ãã ã•ã„ã€‚" << std::endl;
+        return ""; // ç©ºæ–‡å­—åˆ—ã¯ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã‚’ç¤ºã™
     }
 
     if (argc > 2) {
-        std::cout << "Œx: •¡”‚Ìˆø”‚ªw’è‚³‚ê‚Ü‚µ‚½BÅ‰‚Ìˆø”‚ğglTFƒtƒ@ƒCƒ‹ƒpƒX‚Æ‚µ‚Äg—p‚µ‚Ü‚·B" << std::endl;
+        std::cout << "è­¦å‘Š: è¤‡æ•°ã®å¼•æ•°ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸã€‚æœ€åˆã®å¼•æ•°ã‚’glTFãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã¨ã—ã¦ä½¿ç”¨ã—ã¾ã™ã€‚" << std::endl;
     }
 
     std::string gltfFilePath = argv[1];
-    std::cout << "glTFƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚ğs’†: " << gltfFilePath << std::endl;
+    std::cout << "glTFãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã‚’è©¦è¡Œä¸­: " << gltfFilePath << std::endl;
 
-    // ƒtƒ@ƒCƒ‹Šg’£q‚ğŒŸØ
+    // ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã‚’æ¤œè¨¼
     if (!isValidGltfFile(gltfFilePath)) {
-        std::cerr << "ƒGƒ‰[: –³Œø‚Èƒtƒ@ƒCƒ‹Šg’£q‚Å‚·B.gltf‚Ü‚½‚Í.glbƒtƒ@ƒCƒ‹‚ª•K—v‚Å‚·B" << std::endl;
-        std::cerr << "w’è‚³‚ê‚½ƒtƒ@ƒCƒ‹: " << gltfFilePath << std::endl;
-        return ""; // ƒfƒ‚ƒ‚[ƒh‚Å‘±s‚·‚é‚½‚ß‹ó•¶š—ñ‚ğ•Ô‚·
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ç„¡åŠ¹ãªãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã§ã™ã€‚.gltfã¾ãŸã¯.glbãƒ•ã‚¡ã‚¤ãƒ«ãŒå¿…è¦ã§ã™ã€‚" << std::endl;
+        std::cerr << "æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«: " << gltfFilePath << std::endl;
+        return ""; // ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã§ç¶šè¡Œã™ã‚‹ãŸã‚ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
     }
 
-    // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+    // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
     if (!fileExists(gltfFilePath)) {
-        std::cerr << "ƒGƒ‰[: ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢‚©AƒAƒNƒZƒX‚Å‚«‚Ü‚¹‚ñB" << std::endl;
-        std::cerr << "ƒtƒ@ƒCƒ‹ƒpƒX: " << gltfFilePath << std::endl;
+        std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„ã‹ã€ã‚¢ã‚¯ã‚»ã‚¹ã§ãã¾ã›ã‚“ã€‚" << std::endl;
+        std::cerr << "ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹: " << gltfFilePath << std::endl;
 
-        // –ğ—§‚ÂƒGƒ‰[î•ñ‚ğ’ñ‹Ÿ‚·‚é‚İ
+        // å½¹ç«‹ã¤ã‚¨ãƒ©ãƒ¼æƒ…å ±ã‚’æä¾›ã™ã‚‹è©¦ã¿
         size_t lastSlash = gltfFilePath.find_last_of("\\/");
         if (lastSlash != std::string::npos) {
             std::string directory = gltfFilePath.substr(0, lastSlash);
             std::string filename = gltfFilePath.substr(lastSlash + 1);
-            std::cerr << "ƒfƒBƒŒƒNƒgƒŠ: " << directory << std::endl;
-            std::cerr << "ƒtƒ@ƒCƒ‹–¼: " << filename << std::endl;
+            std::cerr << "ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª: " << directory << std::endl;
+            std::cerr << "ãƒ•ã‚¡ã‚¤ãƒ«å: " << filename << std::endl;
         }
 
-        return ""; // ƒfƒ‚ƒ‚[ƒh‚Å‘±s‚·‚é‚½‚ß‹ó•¶š—ñ‚ğ•Ô‚·
+        return ""; // ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã§ç¶šè¡Œã™ã‚‹ãŸã‚ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
     }
 
-    // ’Ç‰ÁŒŸØ‚Ì‚½‚ßƒtƒ@ƒCƒ‹ƒTƒCƒY‚ğæ“¾
+    // è¿½åŠ æ¤œè¨¼ã®ãŸã‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã‚’å–å¾—
     HANDLE hFile = CreateFileA(gltfFilePath.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (hFile != INVALID_HANDLE_VALUE) {
         LARGE_INTEGER fileSize;
         if (GetFileSizeEx(hFile, &fileSize)) {
-            std::cout << "ƒtƒ@ƒCƒ‹ƒTƒCƒY: " << fileSize.QuadPart << " ƒoƒCƒg" << std::endl;
+            std::cout << "ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º: " << fileSize.QuadPart << " ãƒã‚¤ãƒˆ" << std::endl;
 
             if (fileSize.QuadPart == 0) {
-                std::cerr << "ƒGƒ‰[: ƒtƒ@ƒCƒ‹‚ª‹ó‚Å‚·B" << std::endl;
+                std::cerr << "ã‚¨ãƒ©ãƒ¼: ãƒ•ã‚¡ã‚¤ãƒ«ãŒç©ºã§ã™ã€‚" << std::endl;
                 CloseHandle(hFile);
                 return "";
             }
 
-            if (fileSize.QuadPart > 100 * 1024 * 1024) { // ˆÀ‘S‚Ì‚½‚ß100MB§ŒÀ
-                std::cout << "Œx: ‘å‚«‚Èƒtƒ@ƒCƒ‹‚ªŒŸo‚³‚ê‚Ü‚µ‚½i>100MBjB“Ç‚İ‚İ‚ÉŠÔ‚ª‚©‚©‚éê‡‚ª‚ ‚è‚Ü‚·B" << std::endl;
+            if (fileSize.QuadPart > 100 * 1024 * 1024) { // å®‰å…¨ã®ãŸã‚100MBåˆ¶é™
+                std::cout << "è­¦å‘Š: å¤§ããªãƒ•ã‚¡ã‚¤ãƒ«ãŒæ¤œå‡ºã•ã‚Œã¾ã—ãŸï¼ˆ>100MBï¼‰ã€‚èª­ã¿è¾¼ã¿ã«æ™‚é–“ãŒã‹ã‹ã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ã€‚" << std::endl;
             }
         }
         CloseHandle(hFile);
     }
 
-    std::cout << "ƒtƒ@ƒCƒ‹ŒŸØ‚ª¬Œ÷‚µ‚Ü‚µ‚½BglTFƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ€”õŠ®—¹B" << std::endl;
+    std::cout << "ãƒ•ã‚¡ã‚¤ãƒ«æ¤œè¨¼ãŒæˆåŠŸã—ã¾ã—ãŸã€‚glTFãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿æº–å‚™å®Œäº†ã€‚" << std::endl;
     return gltfFilePath;
 }

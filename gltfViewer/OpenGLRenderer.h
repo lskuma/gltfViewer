@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <windows.h>
 #include <GL/glew.h>
@@ -10,24 +10,24 @@
 #include <memory>
 #include "ShaderManager.h"
 
-// ‘O•ûéŒ¾
+// å‰æ–¹å®£è¨€
 namespace tinygltf {
     class Model;
     struct Mesh;
     struct Primitive;
 }
 
-class Camera;  // Camera ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
+class Camera;  // Camera ã‚¯ãƒ©ã‚¹ã®å‰æ–¹å®£è¨€
 
-// glTFƒƒbƒVƒ…ƒf[ƒ^‚ğ•Û‚·‚é\‘¢‘Ì
+// glTFãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã‚’ä¿æŒã™ã‚‹æ§‹é€ ä½“
 struct GLTFMeshData {
     GLuint VAO;
     GLuint VBO;
     GLuint EBO;
     GLenum mode;         // GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.
-    GLsizei indexCount;  // ƒCƒ“ƒfƒbƒNƒX”
-    GLsizei vertexCount; // ’¸“_”
-    bool hasIndices;     // ƒCƒ“ƒfƒbƒNƒX‚ª‚ ‚é‚©‚Ç‚¤‚©
+    GLsizei indexCount;  // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°
+    GLsizei vertexCount; // é ‚ç‚¹æ•°
+    bool hasIndices;     // ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒã‚ã‚‹ã‹ã©ã†ã‹
 
     GLTFMeshData() : VAO(0), VBO(0), EBO(0), mode(GL_TRIANGLES), 
         indexCount(0), vertexCount(0), hasIndices(false) {}
@@ -39,51 +39,51 @@ private:
     HDC m_hDC;
     HGLRC m_hRC;
 
-    // ƒfƒ‚—pOŠpŒ`‚ÌƒŠƒ\[ƒX
+    // ãƒ‡ãƒ¢ç”¨ä¸‰è§’å½¢ã®ãƒªã‚½ãƒ¼ã‚¹
     GLuint m_demoVAO, m_demoVBO;
 
-    // glTFƒƒbƒVƒ…ƒf[ƒ^‚ÌƒRƒ“ƒeƒi
+    // glTFãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ³ãƒ†ãƒŠ
     std::vector<std::unique_ptr<GLTFMeshData>> m_meshData;
 
-    // Œ»İƒ[ƒh‚³‚ê‚Ä‚¢‚églTFƒ‚ƒfƒ‹‚Ö‚ÌQÆ
+    // ç¾åœ¨ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹glTFãƒ¢ãƒ‡ãƒ«ã¸ã®å‚ç…§
     const tinygltf::Model* m_currentModel;
 
-    // ShaderManager‚ğg—p‚µ‚½V‚µ‚¢ƒVƒF[ƒ_[ƒVƒXƒeƒ€
+    // ShaderManagerã‚’ä½¿ç”¨ã—ãŸæ–°ã—ã„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚·ã‚¹ãƒ†ãƒ 
     ShaderManager m_shaderManager;
 
-    // glms—ñ•ÏŠ·‚ÌƒeƒXƒg—p•Ï”
+    // glmè¡Œåˆ—å¤‰æ›ã®ãƒ†ã‚¹ãƒˆç”¨å¤‰æ•°
     glm::mat4 m_modelMatrix;
     glm::mat4 m_viewMatrix;
     glm::mat4 m_projectionMatrix;
 
-    // ƒJƒƒ‰ŠÖ˜A
-    const Camera* m_camera;  // ƒJƒƒ‰‚Ö‚ÌQÆiŠ—LŒ ‚ÍŠO•”j
+    // ã‚«ãƒ¡ãƒ©é–¢é€£
+    const Camera* m_camera;  // ã‚«ãƒ¡ãƒ©ã¸ã®å‚ç…§ï¼ˆæ‰€æœ‰æ¨©ã¯å¤–éƒ¨ï¼‰
 
-    // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒeƒXƒg—p
+    // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ†ã‚¹ãƒˆç”¨
     float m_rotationAngle;
     int m_windowWidth, m_windowHeight;
-    bool m_isDemo;  // ƒfƒ‚ƒ‚[ƒh‚©glTFƒ‚[ƒh‚©‚ğ”»’è
-    bool m_isWireframeMode; // ƒƒCƒ„[ƒtƒŒ[ƒ€•\¦‚©ƒƒbƒVƒ…•\¦‚©‚ğ”»’è
+    bool m_isDemo;  // ãƒ‡ãƒ¢ãƒ¢ãƒ¼ãƒ‰ã‹glTFãƒ¢ãƒ¼ãƒ‰ã‹ã‚’åˆ¤å®š
+    bool m_isWireframeMode; // ãƒ¯ã‚¤ãƒ¤ãƒ¼ãƒ•ãƒ¬ãƒ¼ãƒ è¡¨ç¤ºã‹ãƒ¡ãƒƒã‚·ãƒ¥è¡¨ç¤ºã‹ã‚’åˆ¤å®š
 
     bool initializeOpenGL();
     void setupTriangle();
 
-    // glTFŠÖ˜A‚Ì‰Šú‰»Eˆ—ŠÖ”
+    // glTFé–¢é€£ã®åˆæœŸåŒ–ãƒ»å‡¦ç†é–¢æ•°
     bool processGLTFModel(const tinygltf::Model& model);
     bool processMesh(const tinygltf::Mesh& mesh, const tinygltf::Model& model);
     bool processPrimitive(const tinygltf::Primitive& primitive, const tinygltf::Model& model, GLTFMeshData& meshData);
 
-    // ƒAƒNƒZƒT[‚©‚çƒoƒbƒtƒ@ƒf[ƒ^‚ğæ“¾‚·‚éŠÖ”
+    // ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã‹ã‚‰ãƒãƒƒãƒ•ã‚¡ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹é–¢æ•°
     bool getAccessorData(const tinygltf::Model& model, int accessorIndex, std::vector<float>& data);
     bool getIndexData(const tinygltf::Model& model, int accessorIndex, std::vector<unsigned int>& indices);
 
-    // OpenGLƒŠƒ\[ƒX‚Ìì¬
+    // OpenGLãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
     bool createVAO(
         const std::vector<float>& vertices, 
         const std::vector<unsigned int>& indices, 
         GLTFMeshData& meshData);
 
-    // glms—ñ‚Ì‰Šú‰»ŠÖ”
+    // glmè¡Œåˆ—ã®åˆæœŸåŒ–é–¢æ•°
     void initializeMatrices();
     void updateMatrices();
 
@@ -96,21 +96,21 @@ public:
     void onResize(int width, int height);
     void cleanup();
 
-    // glTFƒ‚ƒfƒ‹‚ğƒ[ƒh‚µ‚Ä•`‰æ€”õ‚ğ‚·‚é
+    // glTFãƒ¢ãƒ‡ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¦æç”»æº–å‚™ã‚’ã™ã‚‹
     bool loadGLTFModel(const tinygltf::Model& model);
 
-    // ƒJƒƒ‰XVŠÖ”iƒtƒF[ƒY5.2‚ÅÀ‘•j
+    // ã‚«ãƒ¡ãƒ©æ›´æ–°é–¢æ•°ï¼ˆãƒ•ã‚§ãƒ¼ã‚º5.2ã§å®Ÿè£…ï¼‰
     void updateCamera(const Camera* camera);
 
-    // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ‚[ƒh‚Ìİ’è
+    // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
     void setDemoMode(bool demo) { m_isDemo = demo; }
 
-    // ƒeƒXƒg—p‚ÌŒöŠJƒƒ\ƒbƒh
+    // ãƒ†ã‚¹ãƒˆç”¨ã®å…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
     //void testShaderCompilation();
     //void testGLMIntegration();
 
 private:
-    // “à•”ƒwƒ‹ƒp[ŠÖ”
+    // å†…éƒ¨ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
     void renderDemo();
     void renderGLTF();
     void cleanupGLTFResources();
