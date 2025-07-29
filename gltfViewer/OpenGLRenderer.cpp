@@ -225,12 +225,14 @@ void OpenGLRenderer::renderGLTF() {
 
     // 各メッシュを描画
     for (const auto& mesh : m_meshData) {
-        glBindVertexArray(mesh->VAO);
+        m_shaderManager.setUniform("u_materialColor", mesh->m_color);
 
-        if (mesh->hasIndices) {
-            glDrawElements(mesh->mode, mesh->indexCount, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(mesh->m_VAO);
+
+        if (mesh->m_hasIndices) {
+            glDrawElements(mesh->m_mode, mesh->m_indexCount, GL_UNSIGNED_INT, 0);
         } else {
-            glDrawArrays(mesh->mode, 0, mesh->vertexCount);
+            glDrawArrays(mesh->m_mode, 0, mesh->m_vertexCount);
         }
 
         glBindVertexArray(0);
@@ -245,14 +247,14 @@ void OpenGLRenderer::renderGLTF() {
 // glTFリソースのクリーンアップ
 void OpenGLRenderer::cleanupGLTFResources() {
     for (auto& mesh : m_meshData) {
-        if (mesh->EBO != 0) {
-            glDeleteBuffers(1, &mesh->EBO);
+        if (mesh->m_EBO != 0) {
+            glDeleteBuffers(1, &mesh->m_EBO);
         }
-        if (mesh->VBO != 0) {
-            glDeleteBuffers(1, &mesh->VBO);
+        if (mesh->m_VBO != 0) {
+            glDeleteBuffers(1, &mesh->m_VBO);
         }
-        if (mesh->VAO != 0) {
-            glDeleteVertexArrays(1, &mesh->VAO);
+        if (mesh->m_VAO != 0) {
+            glDeleteVertexArrays(1, &mesh->m_VAO);
         }
     }
 
@@ -398,13 +400,13 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
     std::vector<unsigned int> indices;
 
     // 描画モードの設定
-    meshData.mode = GL_TRIANGLES;
+    meshData.m_mode = GL_TRIANGLES;
     if (primitive.mode == TINYGLTF_MODE_TRIANGLES) {
-        meshData.mode = GL_TRIANGLES;
+        meshData.m_mode = GL_TRIANGLES;
     } else if (primitive.mode == TINYGLTF_MODE_TRIANGLE_STRIP) {
-        meshData.mode = GL_TRIANGLE_STRIP;
+        meshData.m_mode = GL_TRIANGLE_STRIP;
     } else if (primitive.mode == TINYGLTF_MODE_TRIANGLE_FAN) {
-        meshData.mode = GL_TRIANGLE_FAN;
+        meshData.m_mode = GL_TRIANGLE_FAN;
     }
 
     // 位置データの取得
@@ -419,7 +421,7 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
         return false;
     }
 
-    meshData.vertexCount = static_cast<GLsizei>(vertices.size() / 3);
+    meshData.m_vertexCount = static_cast<GLsizei>(vertices.size() / 3);
 
     // インデックスデータの取得（オプション）
     if (primitive.indices >= 0) {
@@ -427,8 +429,8 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
             std::cerr << "エラー: インデックスデータの取得に失敗しました" << std::endl;
             return false;
         }
-        meshData.hasIndices = true;
-        meshData.indexCount = static_cast<GLsizei>(indices.size());
+        meshData.m_hasIndices = true;
+        meshData.m_indexCount = static_cast<GLsizei>(indices.size());
     }
 
     // マテリアルデータの取得（先ずはベースカラーのみ）
@@ -436,7 +438,7 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
     auto pbr = material.pbrMetallicRoughness;
     auto color = pbr.baseColorFactor;
     glm::vec3 materialColor(color[0], color[1], color[2]);
-    /*m_shaderManager.setUniform("u_materialColor", materialColor);*/
+    meshData.m_color = materialColor;
 
     // VAOの作成
     if (!createVAO(vertices, indices, meshData)) {
@@ -444,9 +446,9 @@ bool OpenGLRenderer::processPrimitive(const tinygltf::Primitive& primitive, cons
         return false;
     }
 
-    std::cout << "    プリミティブ処理完了 (頂点数: " << meshData.vertexCount;
-    if (meshData.hasIndices) {
-        std::cout << ", インデックス数: " << meshData.indexCount;
+    std::cout << "    プリミティブ処理完了 (頂点数: " << meshData.m_vertexCount;
+    if (meshData.m_hasIndices) {
+        std::cout << ", インデックス数: " << meshData.m_indexCount;
     }
     std::cout << ")" << std::endl;
 
@@ -528,17 +530,17 @@ bool OpenGLRenderer::createVAO(
     GLTFMeshData& meshData) 
 {
     // VAOとVBOを生成
-    glGenVertexArrays(1, &meshData.VAO);
-    glGenBuffers(1, &meshData.VBO);
+    glGenVertexArrays(1, &meshData.m_VAO);
+    glGenBuffers(1, &meshData.m_VBO);
 
-    if (meshData.hasIndices) {
-        glGenBuffers(1, &meshData.EBO);
+    if (meshData.m_hasIndices) {
+        glGenBuffers(1, &meshData.m_EBO);
     }
 
-    glBindVertexArray(meshData.VAO);
+    glBindVertexArray(meshData.m_VAO);
 
     // 頂点バッファーの設定
-    glBindBuffer(GL_ARRAY_BUFFER, meshData.VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, meshData.m_VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     // 位置属性の設定 (location = 0)
@@ -546,8 +548,8 @@ bool OpenGLRenderer::createVAO(
     glEnableVertexAttribArray(0);
 
     // インデックスバッファーの設定（存在する場合）
-    if (meshData.hasIndices) {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.EBO);
+    if (meshData.m_hasIndices) {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.m_EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
     }
 

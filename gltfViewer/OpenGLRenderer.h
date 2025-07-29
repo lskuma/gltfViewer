@@ -21,16 +21,26 @@ class Camera;  // Camera クラスの前方宣言
 
 // glTFメッシュデータを保持する構造体
 struct GLTFMeshData {
-    GLuint VAO;
-    GLuint VBO;
-    GLuint EBO;
-    GLenum mode;         // GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.
-    GLsizei indexCount;  // インデックス数
-    GLsizei vertexCount; // 頂点数
-    bool hasIndices;     // インデックスがあるかどうか
+    GLuint m_VAO;
+    GLuint m_VBO;
+    GLuint m_EBO;
+    GLenum m_mode;         // GL_TRIANGLES, GL_TRIANGLE_STRIP, etc.
+    GLsizei m_indexCount;  // インデックス数
+    GLsizei m_vertexCount; // 頂点数
+    bool m_hasIndices;     // インデックスがあるかどうか
+    glm::vec3 m_color;     // メッシュの色（デフォルトは白）
 
-    GLTFMeshData() : VAO(0), VBO(0), EBO(0), mode(GL_TRIANGLES), 
-        indexCount(0), vertexCount(0), hasIndices(false) {}
+    GLTFMeshData()
+        : m_VAO(0)
+        , m_VBO(0)
+        , m_EBO(0)
+        , m_mode(GL_TRIANGLES)
+        , m_indexCount(0)
+        , m_vertexCount(0)
+        , m_hasIndices(false) 
+        , m_color(1.0f, 1.0f, 1.0f)
+    {
+    }
 };
 
 class OpenGLRenderer {
